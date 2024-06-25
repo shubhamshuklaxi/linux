@@ -1,0 +1,14 @@
+  View your data at the link below:
+  ⮕  https://onenr.io/0bRKqpN8OQE
+
+  View your logs at the link below:
+  ⮕  https://onenr.io/0yw4pNG3Dw3
+
+
+#Steps to innstall new relic
+
+create account in new relic
+
+copy installation url and paste in the terminal
+
+sudo yum remove newrelic-infra  (to remove new relic).

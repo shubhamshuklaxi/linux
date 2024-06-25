@@ -1,0 +1,22 @@
+The Ansible inventory file defines the hosts and groups of hosts upon which commands, modules, and tasks in a playbook operate. The file can be in one of many formats depending on your Ansible environment and plugins.
+
+
+A static inventory is a text-based file that consists of a list of managed host servers and IP addresses, usually bundled in groups. Static inventories are usually stored in the form of an INI or a YAML file.
+
+The default location for this file is /etc/ansible/hosts
+
+You can specify a different inventory file at the command line using the -i <path>
+
+We make entries of hostname in inventory file a group eg: [group].
+
+A dynamic inventory plugin allows users to point at data sources to compile the inventory of hosts that Ansible uses to target tasks, either via the -i /path/to/file and/or -i 'host1, host2' command line parameters or from other configuration sources.
+
+
+
+ansible host --list-hosts  -i ~/inventory/nodes (to list host of group)
+
+
+ansible all --list-hosts  -i ~/inventory (to list all hosts of inventory)
+
+
+ansible host -m copy -a 'src=cal.txt dest=/root/' (copy module to copy file from src to dest)

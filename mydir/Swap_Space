@@ -1,0 +1,46 @@
+How to create swap space:
+
+1. mkswap /dev/vgname/lvname (creating swap using lv).
+
+2. swapon /dev/vgname/lvname (activating swap).
+
+how to extend swap:
+
+---cat /proc/swaps (to check swap memory location).
+
+1. swapoff /dev/vgname/lvname.
+
+2. extend the lvm.
+
+3. swapon /dem/vgname/lvname.
+
+--vmstat to check swapin swapout numbers.
+
+--cat /proc/sys/vm/swappiness to check swapiness value
+
+how to create swap using disk space:
+
+1. fallocate -l size name.
+
+---dd if=/dev/zero of=swapfilename bs=block-size count=number of count.
+
+2. chmod 600 swapfilename (set swapfile permission to 600).
+
+3. mkswap filename (creating swap on file).
+
+4. swapon filename (enabling swap on file).
+
+5. swapoff filename (disabling swap on file).
+
+6. swapon --show to list all swap file in system.
+
+Follow below steps to enable to permanent swappiness value:
+
+1 vim /etc/sysctl.conf
+
+2 vm.swappiness=swappiness-value.
+
+--end
+
+
+

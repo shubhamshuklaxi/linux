@@ -1,0 +1,80 @@
+Nagios :
+
+Nagios provides an intuitveweb interface for administration and monitoring.
+
+yum install @php -y
+
+yum install @perl @httpd wget unzip glibc automake glibc-comman gettext autoconf php php-cli gcc gd-devel net-snmp openssl-devel unzip net-snmp postfix net-snmp-utils -y
+
+systemctl start php-fpm.service
+
+systemctl enable php-fpm.service
+
+systemctl status php-fpm.service
+
+
+useradd nagios
+
+groupadd nagcmd
+
+usermod -G nagcmd nagios
+
+usermod -G nagcmd apache
+
+mkdir /root/nagios
+
+cd /root/nagios
+
+wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.5.tar.gz
+
+wget https://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz
+
+tar -xvf nagios-4.4.5.tar.gz
+
+tar -xvf nagios-plugins-2.2.1.tar.gz
+
+cd nagios-4.4.5/
+
+./configure --with-command-group=nagcmd
+
+make all
+
+make install
+
+make install-init
+
+make install-commandmode
+
+make install-config
+
+vim /usr/local/nagios/etc/objects/contacts.cfg (set ur email).
+
+make install-webconf
+
+htpasswd -s -c /usr/local/nagios/etc/htpasswd.users nagiosadmin (adding password for nagiosadmin).
+
+service httpd start
+
+systemctl start httpd.service
+
+cd /root/nagios
+
+cd nagios-plugins-2.2.1/
+
+./configure --with-nagios-user=nagios --with-nagios-group=nagios
+
+make 
+
+make install
+
+/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+
+systemctl enable nagios
+
+systemctl enable httpd
+
+service nagios start
+
+systemctl start nagios.service
+
+

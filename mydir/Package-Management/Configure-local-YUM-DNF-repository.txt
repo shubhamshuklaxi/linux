@@ -1,0 +1,55 @@
+Configuring-Local-yum/dnf repository:
+
+If we want to install a package and we won't have subscription then we have to configure local repository.
+
+/dev/sr0 has the iso image file of system.
+
+Which is automatically mounted at /run/media/root/RHEL-8-1-0-BaseOS-x86_64.
+
+essentianal directory for local repo configurtaion:
+
+/AppStream   (Apps related packages are available in AppStream dir)
+
+/BaseOS      (OS related packages are available in BaseOS dir)
+
+mkdir -p /dir (creating a parent directory to mount iso image dvd).
+
+mount /dev/sr0 /localrepo/
+
+--mount /dev/cdrom /localrepo
+
+
+cd /etc/yum.repos.d/ (we have to create a file with .repo extention here).
+
+vim local.repo 
+
+[repo-id]    (mention-repo-id without space u can give it any random name)
+
+name=reponame (you can mention any repo name without space).
+metadata_expire=-1 (we can -1 or never so that metadata won't expire)
+gpgcheck=1 (we are enabling gpgcheck to check the authenticity of packages, we can set 0 to disable it).
+enabled=1 (we are setting 1 to enable repo, if we want to disable it, then we have to mention 0).
+basurl=file://repo-dir-path (full path of the directory u want to use as repo)
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release  (full path of /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release file to check key authenticity).
+
+etc/yum/pluginconf.d/subscription-manager.conf ( enter enabled=0 to disable unwanted messages).
+
+cat /etc/yum.conf (we can make global settings related to yum and repo)
+[main]
+gpgcheck=1
+installonly_limit=3
+clean_requirements_on_remove=True
+best=True
+
+
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release  (to import key).
+
+dnf config-manager --add-repo=file://repo-dir-path (to install repo using commands)
+dnf config-manager --add-repo=url (install repo using url)
+
+yum clean all (to clean cache file of yum).
+
+
+
+
+

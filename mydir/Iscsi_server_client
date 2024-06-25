@@ -1,0 +1,73 @@
+Iscsi server-client configurantion:
+
+
+At server end:
+
+
+1. yum install targetcli* -y
+
+2. yum install iscsi-initiator-utils* -y
+
+3. systemctl start target
+
+4. systemctl enable target
+
+5. firewall-cmd --permanent --add-port=3260/tcp
+
+6. firewall-cmd --permanent --add-port=3260/udp
+
+7. firewall-cmd --reload 
+
+8. targetcli
+
+/>ls
+/>/backstores/block create lun-name /dev/sdc (creating luns)
+/>ls
+/>/iscsi create (creating target iqn number)
+/>ls
+/>/iscsi/server-iqn-number/tpg1/luns create /backstores/block/newlun (creating lun inside the iscsi iqn tpg1 luns)
+/>ls
+/>/iscsi/server-ipn-number/tpg1/acls create client-iqn-number (mapping client iqn)
+/>exit
+
+
+At client end:
+
+
+1. cat /etc/iscsi/initiatorname.iscsi (display iqn-number)
+
+2. iscsiadm -m(--mode) discovery -t(--type) sendtargets -p(--portal=ip[:port]) server-ip (Discovering target server-ip)
+
+3. iscsiadm -m(--mode) node -T(--targetname) target-server-iqn-number target-server-ip -l(--login) (for login into the target server)
+
+4. lsblk (to see the block-device-name)
+
+5. iscsiadm -m(--mode) node --logoutall=all (logout from all targets)
+
+Additional info:
+
+6. Login, must use a node record id found by the discovery:
+
+              iscsiadm  -m(--mode)  node  -T(--targetname) iqn-number -p(--portal)
+              ip:port --login
+
+7. Logout,
+
+              iscsiadm  -m(--mode)  node  -T(--targetname) iqn-number -p(--portal)
+              ip:port --logout
+
+8. List node records:
+
+              iscsiadm --mode node
+
+
+9. Discover targets at a given IP address:
+
+              iscsiadm  -m(--mode)  discovery -t(--type) sendtargets -p(--portal) server-ip
+              -d(--discover)
+
+       Login, must use a node record id found by the discovery:
+
+              iscsiadm -m(--mode) node  -T(--targetname)  server-iqn-number  -p(--portal)
+              server-ip-port --login
+done:

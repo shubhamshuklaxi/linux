@@ -1,0 +1,37 @@
+[grafana]
+name=grafana
+baseurl=https://packages.grafana.com/oss/rpm
+repo_gpgcheck=1
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.grafana.com/gpg.key
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+
+:wq!
+
+dnf repolist 
+
+
+dnf install grafana -y
+
+systemctl enable --now gafana 
+
+open 3000/tcp port in firewall
+
+
+when u login in grafana dashboard
+
+click on add data source
+
+select prometheus
+
+http://prometheus-server-ip:9090/ paste url at data source
+
+save it
+
+go to import paste url for ur favourite dashboard save 
+
+done
+
+

@@ -1,0 +1,42 @@
+Steps to configure samba Server:
+
+1. yum install samba -y (installing samba server packages).
+
+2. systemctl start smb.service (starting the smb service).
+
+3. systemctl enable smb.service (enabling smb service so that it can remain active after boot).
+
+4. systemctl status smb.service (checking whether smb service is running or not).
+
+5. firewall-cmd --permanent --add-service=samba (adding smb service in firewalld).
+
+6. firewall-cmd --reload (reloading firewalld so that chages can be applied to it).
+
+7. mkdir /dir (making a directory to share).
+
+9.  cd /dir
+
+10. chcon -t samba_share_t /dir/ (changing the selinux file security context). 
+
+11. vim /etc/samba/smb.conf 
+
+Enter the below details at the end of the file:
+
+[sharename]
+path=/smb-share-dir
+hosts allow=ip/prefix
+write list=username
+valid users=username
+browseable=yes
+
+#save the file
+
+12. smbpasswd -a shubham (add smbuser as well as smbpasswd).
+
+13. systemctl restart smb.service (restarting the service).
+
+#now go to the window client and and map the network.
+
+
+
+

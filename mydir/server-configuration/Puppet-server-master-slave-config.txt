@@ -1,0 +1,105 @@
+Steps to configure puppet server:
+
+yum update -y   (update OS).
+
+init 6  (reboot system).
+
+dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+
+dnf -y install https://yum.puppetlabs.com/puppet-release-el-8.noarch.rpm
+
+firewall-cmd --permanent --add-service=puppetmaster
+
+firewall-cmd --reload 
+
+set hostname
+
+set timezone
+
+vim /etc/puppetlabs/puppet/puppet.conf
+
+[master]
+dns_alt_names = puppetmaster,puppetmaster.server1.com
+
+
+[main]
+certname = puppetmaster.server1.com
+server = puppetmaster.server1.com
+environment = production
+
+:wq!
+
+vim /etc/hosts
+
+192.168.43.208 puppetmaster.server1.com puppetmaster
+192.168.43.236 puppetagent.server2.com
+
+:wq!
+
+puppetserver ca setup
+
+systemctl enable --now puppetserver.service
+
+systemctl status puppetserver.service
+
+
+Steps to sign certs:
+
+
+puppetserver ca list
+
+puppetserver ca sign --certname puppetagent.server2.com
+
+
+vi /etc/puppetlabs/code/environments/production/manifests/mytest.pp
+
+package { 'nginx':
+    provider => yum,
+    ensure   => installed,
+}
+
+file { '/tmp/mypuppettest.txt':
+    ensure  => file,
+    content => 'This is my puppet testing file.',
+}
+
+:wq!
+
+
+puppet apply /etc/puppetlabs/code/environments/production/manifests/mytest.pp
+
+
+Steps to configure puppet agent:
+
+dnf -y install https://yum.puppetlabs.com/puppet-release-el-8.noarch.rpm
+
+dnf -y install puppet-agent
+
+set hostname
+
+set timezone
+
+vim /etc/hosts
+
+192.168.43.208 puppetmaster.server1.com puppetmaster
+192.168.43.236 puppetagent.server2.com
+
+:wq!
+
+vim /etc/puppetlabs/puppet/puppet.conf
+
+[main]
+certname = puppetagent.server2.com
+server = puppetmaster.server1.com
+environment = production
+
+:wq!
+
+puppet agent --test --ca_server=puppetmaster.server1.com
+
+systemctl restart puppet.service (to apply puppetserver scripts).
+
+
+
+
+

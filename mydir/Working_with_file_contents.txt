@@ -1,0 +1,49 @@
+. cat command is use to view the contents of file.
+
+. cat > filename to create as well as write in the file at once.
+
+. cat > filename
+  hello
+  ctrl + d or c
+
+. cat >> filename to write in the file.
+  hello
+  ctrl + d or c
+
+
+. head command is use to view top 10 lines of the file.
+
+. head -n number to view any particular top to botttom lines of the file.
+
+. head command is use to view bottom 10 lines of the file.
+
+. tail -n number to view any particular botttom to top lines of the file.
+
+. touch command is use to create empty file.
+
+. echo command to print anything.
+
+. echo hello > filename to create as well as write in the file at once.
+
+. echo hello >> filename write in the file.
+
+. cat > filename <<custom-exit-command is use to create exit custom command.
+
+. tac command is use to print file contents in reverse order.
+
+. more command is use to crt viewing of file contents.
+
+. up - down arrow button for scrolling contents of file.
+
+. space button for scrolling swiftly file contents.
+
+. We use q command to exit from file.
+
+. less - same as more but it doesn't show the contents in %.
+
+. strings command is use to display contents of binary files.
+
+
+
+
+

@@ -1,0 +1,172 @@
+Input Output redirection:
+
+stdin  = standard input (0).
+stdout = standard output (1).
+stderr = standard error (2).
+
+command 2>error.txt (saving error in error.txt file, we can use any filename ).
+
+command 2>>error.txt (to append error in file).
+
+set -o noclobber (if enable noclobber then it will prevent ant file to get override).
+
+set +o noclobber (disabling noclobber).
+
+if use >| then it will override noclobber option.
+
+command 2>/dev/null (if we will redirect any thing to /dev/null it will become zero).
+
+command > file.txt 2>&1 ( if we mention 2>&1 at the end of the file then it will save any error as well stdout).
+
+
+Basic UNIX Tools:
+
+
+gzip filename (to compress file with .gz extention).
+
+zcat filename.gz (to view contents of file having .gz extention).
+
+gunzip filename.gz (to decompress file having .gz extention).
+
+bzip2 filename (to compress file with .bz2 extention).
+
+bzcat filename (to view contents of file having .bz2 extention)
+
+bunzip2 filename (to decompress file having .bz2 extention).
+
+TAR (Tape archive):
+
+tar -cvf archive-name.tar file1 file2 file... (to create archival of files with .tar extention).
+
+tar cvfz -cvfz archive-name.tar.gz file1 file2 file... (creating archival as well compressing it with .gz extention).
+
+tar cvfj or -cvfj archive-name.tar.bz2 file1 file2 file... (creating archival as well compressing it with .bz2 extention).
+
+tar tvf or -tvf archive-name.tar (to view compressed file with .tar extention).
+
+tar xvf or -xvf arhive-name.tar (to dempress as well as unarchive file having .tar extention).
+
+use -p to preserve permissions of file.
+
+
+
+find - search for files in a directory hierarchy.
+
+find /path -type f -name ".*" (to find a hidden files
+
+find /path -type f -name filename (to find file in the mentioned directory).
+
+find /path -type f -name filename (to find file in the mentioned directory with case ignored opt).
+
+find /path -type d -name dir-name (to find dir in the mentioned directory).
+
+find /path -type d -name dir-name (to find dir in the mentioned directory with case ignored opt).
+
+find /path -perm /u=rwx,g=rx,rx or perm-in-octal-format (to find the the file or dir having mention perm).
+
+find /path -perm /g=s (to find the file or dir having guid bit).
+
+find /path -perm /u=s (to find the file or dir having uid bit).
+
+find /path -perm /=t  (to find file or directory having stiky bit).
+
+find /path -perm /g=s -print -exec chmod g-s {} \; (find file or dir with g=s and removing it at once).
+
+find /path1 -type f -name filename -print -exec cp {} /path2/ \; (find a file with perticular name and copy it to a specific path).
+
+find /path -type f -name filename -print -exec rm {} \; (find a file with perticular name a remove it).
+
+find /path -type f -user username (find files with it's user).
+
+find /path -type d -user username (find dirs with it's user).
+
+find /path -type f -group groupname (find files with it's group).
+
+find /path -type d -group groupname (find dirs with it's group).
+
+find /path -type f -mtime -number-of-days (find all files which were modified before number-of days).
+
+find /path -type f -mtime +number-of-days (find all files which were modified after number-of days).
+
+find /path -type f -atime -number-of-days (find all files which were accessed before number-of days).
+
+find /path -type f -mtime +number-of-days (find all files which were accessed after number-of days).
+
+find /path -type f -mtime +5 -mtime -7 (find files modified between 5 to 7 days).
+
+find /path -type f -atime +5 -atime -7 (find files accessed between 5 to 7 days).
+
+find /path -type f -mmin -number-of-minutes (find all files which were modified before number-of-minutes).
+
+find /path -type f -mmin +number-of-minutes (find all files which were modified after number-of-minutes).
+
+find /path -type f -amin -number-of-minutes (find all files which were accessed before number-of-minutes).
+
+find /path -type f -amin +number-of-minutes (find all files which were accessed after number-of-minutes).
+
+find /path -type f -mmin +5 -mmin -7 (find files modified between 5 to 7 minutes).
+
+find /path -type f -mmin +5 -mmin -7 (find files accessed between 5 to 7 minutes).
+
+find /path -type f -size -number(G/M/K) (find less than number(G/M/K)).
+
+find /path -type f -size +number(G/M/K) (find greater than number(G/M/K)).
+
+find /pth -type f -size +5M -size -7M (find files having size more than 5M and greater than 7M).
+
+find /path -type -newer filename (find files newer than mentioned filename).
+
+locate filename (to find file in the system).
+
+
+Regular expression:
+
+BRE = Basic regular expression.
+
+ERE= Extended regular expression.
+
+PRCE = Perl regular expression. 
+
+
+grep string filename (to print matching word in file).
+
+grep -E 'b|n' filename ("-E represents extented regular expression", command will print the either matching etchars).
+
+grep -G 'b\|a' ("-G represents basic regular expression", it is same ad above command).
+
+grep -E 'char*' filename (print everything as well as matching char).
+
+grep -E 'char+' filename (print only matching char).
+
+grep a$ filename (print line ending with a char).
+
+grep ^a filename (print line starting with a char).
+
+grep -w word filename (print the mathing word in file).
+
+grep -i A filename (print the matching word in file ignoring case sensitiveness).
+
+grep -v work filename (print the non matching word only in file).
+
+sed (strean editor)
+
+echo "Sunday"|sed 's/Sun/Mon/' (replacing Sun with Mon for read only).
+
+echo "Sunday"|sed 's_Sun_Mon_'
+
+echo "Sunday"|sed 's:Sun:Mon:'
+
+
+sed -i "s/Sun/Mon/" filename (find the Sun and replace it with Mon).
+
+
+
+
+
+
+
+
+
+
+
+

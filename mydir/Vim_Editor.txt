@@ -1,0 +1,97 @@
+aAiIoO
+
+
+press "a" to start writing after the current char.
+
+press "A" to start writing at the end of the currnet line.
+
+press "i" to start writing before current char.
+
+press "I" to start writing at the start of the line.
+
+press "o" to start writing below the current line.
+
+press "O" to start writing above the current line.
+
+press "x" to delete current char.
+
+press "X" to delete left char.
+
+press "r" to replace current char.
+
+press "xp" to switch between to char.
+
+press "u" to undo changes.
+
+press "." to redo changes.
+
+press "dd" to delete the current line.
+
+press "yy" to copy the current line.
+
+press "p" to paste below the current line.
+
+press "P" to paste above the current line.
+
+press escape to get out of insert mode
+
+press :w to sav file.
+
+press :w newfilename and enter to rename file.
+
+press "ZZ" to save file.
+
+press :wq! to quit and save.
+
+press :q! to quit without save.
+
+press number "dd" to cut mentiond number of from current line to DESC.
+
+press "0" to go at the start of the current line.
+
+press "$" to go at the end of the current line.
+
+press "d$" to delete everything after the curesor.
+
+press "d0" to delete every thing before the cursor.
+
+press "J" to delete space between line.
+
+press "w" to jump one word forward.
+
+press "b" to jump one word backword.
+
+press "dw" to delete one word forward.
+
+press "db" to delete one word backward.
+
+press :/word for forward search.
+
+press :?word for the backword search.
+
+press "n" to at next refference.
+
+press :r filename to copy content of file.
+
+press :r !command to copy output of command.
+
+press "k" to move upword.
+
+press "j" to move downword
+
+press "l" t0 move right.
+
+press "h" to move left.
+
+
+
+
+
+
+
+
+
+
+
+
+

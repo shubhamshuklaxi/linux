@@ -1,0 +1,47 @@
+
+DESCRIPTION
+       Anacron is used to execute commands periodically, with a frequency specified in days.  Unlike cron(8),
+       it does not assume that the machine is running continuously.  Hence, it can be used on  machines  that
+       are not running 24 hours a day to control regular jobs as daily, weekly, and monthly jobs.
+
+Anacron  reads  a  list of jobs from the /etc/anacrontab configuration file.
+
+
+Below is the format to schedule jobs using anacron:
+
+# /etc/anacrontab: configuration file for anacron
+
+# See anacron(8) and anacrontab(5) for details.
+
+SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+# the maximal random delay added to the base delay of the jobs
+RANDOM_DELAY=45
+# the jobs will be started during the following hours only
+START_HOURS_RANGE=3-22
+
+#period in days   delay in minutes   job-identifier   command
+1	5	cron.daily		nice run-parts /etc/cron.daily
+7	25	cron.weekly		nice run-parts /etc/cron.weekly
+@monthly 45	cron.monthly		nice run-parts /etc/cron.monthly
+
+
+1. ll -h /var/spool/anacron/ (to list the ancron setting file).
+
+-rw-------. 1 root root 9 Feb 10 21:43 cron.daily
+-rw-------. 1 root root 9 Jan 15 20:09 cron.monthly
+-rw-------. 1 root root 9 Feb  4 19:42 cron.weekly
+
+
+2. vim /etc/anacrontab (to schedule jobs using anacron).
+
+Below is the format to schedule anacron jobs:
+
+@monthly/@daily/@weekly delay-in-monutes job-identifier.daily/weekly/monthly shell-name /script-name.sh
+
+3. anacron -d (to execute anacron job)
+
+4. anacron -d -f (to execute anacron job forcefully).
+
+

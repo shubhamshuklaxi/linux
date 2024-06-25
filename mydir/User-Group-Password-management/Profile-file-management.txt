@@ -1,0 +1,30 @@
+Profile Files:
+
+There are two types of profile files:
+
+1. System profile files.
+
+2. User profile files.
+
+System profile files:
+
+/etc/profile use to set path environment variable , PS1 variable and HOSTNAME variable and use to execute /etc/inpurc file and /etc/bashrc file.
+
+User profile files:
+
+User profile files are located in home directory user.
+
+Below are user profile files:
+
+.bash_history -: session commands are stored in this file after user logout.
+
+.bash_logout -: this file is used to tell system that user has logged out.
+
+.bash_profile -: it's use to add $ home and source ./bashrc file, this file only execute at user login.
+
+.bashrc -: it's use to source /etc/bashrc file, it executes each time when new shell started.
+
+All above files are sourced from /etc/skel directory.
+
+
+

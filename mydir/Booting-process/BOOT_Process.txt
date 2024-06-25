@@ -1,0 +1,99 @@
+Linux working structure:
+
+1. Shell:  where user write commands.
+
+2. kernel: it works interpreters between shell and hardware.
+
+3. Hardware.
+
+Linux booting process:
+
+
+Definition: process of copying OS files from /boot partition of hard disk drive to RAM is known as booting.
+
+
+Sequence of booting:
+
+
+1. POST - Power On self test: it tests itself, it checks whether all the attached components in our machine are in working condition and working order or not.
+
+
+2. BIOS - basic input output system:it's a chip in form of hardware it has inbuilt program it makes decision on what will be booting disk.
+
+---It resides inside CMOS chip in form of a battery.
+
+---BIOS is a combination of both hardware as well as software.
+
+---BIOS provides us option to choose a boot device.
+
+---Then it gives the control to MBR.
+
+3. Master boot record - it's 512 bytes space inside memory which resides inside the first sector of primary Disk and it knows about partition location in Disk as well as it knows location of OS and how to use it.
+
+---MBR searches boot loader.
+
+---It uses initramFS(it's a type of ram which has GRUB(grand unified boot loader) address to help MBR).
+
+---Provides us a boot selection menu to choose a particular system (OS) which we want to boot our machine.
+
+---Then it handovers the control to the boot loader.
+
+4. GRUB: Grand unified boot loader it used to load kernel image(VMlinuz is kernel image of redhat).
+
+---Location(/boot/grub/grub.conf), GRUB2 is latest version of bootloder.
+
+---It contains info about linux kernel & initial (basic) RAM Disk
+
+---It knows particular partition where the root file system is loaded.
+
+---It gives control to kernel.
+
+5. Kernel: it loads OS utility.
+
+---kernal (VMlinuz) find drivers in initramfs for all hardware initialization.
+
+--- Kernel tries to mount root FS and tries to start systemd process.
+
+--- Kernel initializes all hardware which drivers it finds in initramFS.
+
+--- Kernel executes /sbin/init from the initramFS as the first process having process ID 1.
+
+--- On rhel8 init has been replaced with system & /sbin/bin file is soft link to systemd.
+
+ll /sbin/init 
+lrwxrwxrwx. 1 root root 22 Dec 22 01:38 /sbin/init -> ../lib/systemd/systemd
+
+--- Systemd executes all units for initrd.target, it includes mounting the root FS on the Disk at sysroot directory on the temporary basis with help of initramFS.
+
+
+6. Init(target): initialization 
+
+---In rhel8 runlevels are known as targets, there are total 7 targets (runlevels) in linux.
+
+Init levels:
+
+0. Run level 0 = init 0 - shutdown.
+
+1. Run level 1 = init 1 - single user mode without GUI & NFS.
+
+2. Run level 2 = init 2 - multi user mode without network FS.
+
+3. Run level 3 = init 3 - multi user mode with NFS.
+
+4. Run level 4 = init 4 - Research purpose.
+
+5. Run level 5 = init 5 - X11 (Linux Graphics).
+
+6. Run level 6 = init 6 - reboot.
+
+--- Kernel root FS switched from initramFS root (/sysroot) to system root FS.
+
+--- Systemd looks for default.target.
+
+--- Systemd uses /etc/systemd/system/default.target file determine default target or runlevel.
+
+--- System target file defines the services that system starts.
+
+--- Systemd process starts other services & OS components.
+
+

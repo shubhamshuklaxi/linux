@@ -1,0 +1,36 @@
+at command usage:
+
+1. atq (to list jobs).
+
+2. at hours:minutesAM/PM mm/dd/yy(to schedule jobs).
+
+>enter the task
+> press control + d
+
+3. atrm jobid (to kill the job)
+
+-- at -l jobid (to display a particular job's details).
+
+--mention /dev/pts/0 (to display the output in terminal).
+
+--mention the user in /etc/at.deny to restrict user from executing at.
+
+--We can't schedule repeatative job using at. 
+
+--tail -f /var/log/cron (to display the log detail of jobs which were scheduled using at).
+
+-- echo "hello">/dev/pts/0| at 09:10PM 12:12:2022 (to schedule job without expert mode).
+
+-- at 9:10PM mm/dd/yy -f /script.sh (to execute script).
+
+-- at 21:18 -M (to trigger mail when output generates).
+
+-- at 21:10 -m (to trigger mail when output does not generates).
+
+-- echo "load is exceeded" | batch (when sysload decreases less than 0.8).
+
+-- at -c jobid (to display the detail of the job).
+
+-- cd /var/spool/at/ (in this dir u can change the job via making changes in jobfile).
+
+

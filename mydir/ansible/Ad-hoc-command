@@ -1,0 +1,51 @@
+We use ansible ad-hoc command for one time automation
+
+ ansible-doc -l (List default module)
+
+ansible-doc module-name (to read manual for a module)
+
+Below are few popular ansible module:
+
+Copy, Command, Raw, Shell, Fetch, Get_url, Lineinfile, Replace, File, User, Group, Yum, Package, Stat, Mount, Setup.
+
+
+ansible all -m copy -a "src=c.txt dest=/root/" (-m for module -a for args)
+
+ansible all -m command -a "ls -la /root/c.txt" (command modules use to fire normal command on remote machine)
+
+ -b --become-method sudo (add this at end of command to become sudo user)
+
+-b --become-user debian 
+
+ansible all -m shell -a "/test.sh (to execute shell script on remote machine)
+
+ansible all -m file -a "path=/tmp/file state=directory mode=0000 owner=root group=root" (path for giving path state for filetype mode for perms ).
+
+ansible template  -m fetch -a "src=/root/p.cfg dest=/root/" (to fetch file from remote machine)
+
+ansible template  -m get_url -a "url=https://linux-training.be/linuxtraining_20211003.pdf dest=/root/" (to download anythingfrom url)
+
+
+ansible template  -m lineinfile -a "dest=/root/cal.txt line='How r u'" (adding a new line in file)
+
+ansible template  -m lineinfile -a "dest=/root/cal.txt line='Thanks.' insertafter=EOF" 
+
+ansible template  -m lineinfile -a "dest=/root/cal.txt line='Thanks' insertafter=BOF"
+
+ansible template  -m lineinfile -a "dest=/root/cal.txt line='u so much' insertafter=This" (to remove line after a word)
+ 
+ansible template  -m lineinfile -a "dest=/root/cal.txt line='Thanks' state=absent"
+
+ansible template  -m lineinfile -a "dest=/root/cal.txt regexp=^How state=absent"
+
+ansible template  -m replace -a "dest=/root/cal.txt regexp=^Welcome replace=Hi" (replacing a line).
+
+ansible all -m user -a "name=ansible state=present" (to add user).
+
+ansible all -m user -a "name=ansible state=absent" (to remove user). 
+
+ansible all -m group -a "name=ansible state=present" (to add a group)
+
+ansible all -m group -a "name=ansible state=absent"  (to remove a group)
+
+

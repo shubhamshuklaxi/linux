@@ -1,0 +1,48 @@
+Access Control Entries (ACE):
+
+[Access type]:[Flags]:[principle]:[permissions]
+
+ACE PERMISSIONS:
+    There are a variety of different ACE permissions (13 for files, 14 for direc‐
+    tories), each represented by a single character.  An ACE should have  one  or
+    more of the following permissions specified:
+
+    r      read-data (files) / list-directory (directories)
+
+    w      write-data (files) / create-file (directories)
+
+    a      append-data (files) / create-subdirectory (directories)
+
+    x      execute (files) / change-directory (directories)
+
+    d      delete  - delete the file/directory.  Some servers will allow a delete
+           to occur if either this permission is set in the file/directory or  if
+           the delete-child permission is set in its parent directory.
+
+    D      delete-child  -  remove  a  file or subdirectory from within the given
+           directory (directories only)
+
+    t      read-attributes - read the attributes of the file/directory.
+
+    T      write-attributes - write the attributes of the file/directory.
+
+    n      read-named-attributes - read the named attributes of  the  file/direc‐
+           tory.
+
+    N      write-named-attributes - write the named attributes of the file/direc‐
+           tory.
+
+    c      read-ACL - read the file/directory NFSv4 ACL.
+
+    C      write-ACL - write the file/directory NFSv4 ACL.
+
+    o      write-owner - change ownership of the file/directory.
+
+    y      synchronize - allow clients to use synchronous I/O with the server.
+
+nfs4_setfacl -x A::uid:RWX file-name (to give special to other user in nfs).
+
+nfs4_setfacl -x A:g:gid:RWX file-name (to give special permission to group in nfs)
+
+nfs4_editfacl file-name (to edit acl in nfs).
+

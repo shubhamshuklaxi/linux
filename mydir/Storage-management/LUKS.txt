@@ -1,0 +1,49 @@
+--------Linux unified key setup(LUKS)--------:
+
+
+Usage: LUKS is used doe encrypting Disks and Disk's partitions.
+
+Steps to enable LUKS in Disk or Disk partition:
+
+1. cryptsetup luksFormat /dev/block-device-name (setting passwd for disk).
+
+2. cryptsetup luksOpen /dev/block-device-name filename (making entry in /dev/mapper using a file).
+
+3. cryptsetup status filename (to check the entries in /dev/mapper of file).
+
+4. mkfs.xfs /dev/mapper/filename (formatting FS).
+
+5. mount /dev/mapper/filename /dir (mounting FS in directory).
+
+6. touch cryptfile (creating an empty file "you can have any file-name")
+
+7. cryptsetup luksAddKey /dev/block-device-name cryptfile-path (storing key of the block-device to /root/crypt_file)
+
+8. vim /etc/crypttab (opening file crypttab).
+
+filename /dev/block-device-name cryptfile-path
+
+save and quit.
+
+9. make entry in /etc/fstab file.
+
+10. mount -a 
+
+
+How to close the LUKS:
+
+1. umount dir/ (unmounting dir which was mounted on luks disk).
+
+2. cryptsetup luksClose filename (closing LUKS utitity on the file).
+
+3. cryptsetup luksRemoveKey /dev/block-device-name (removing LUKS key from Disk).
+
+4. cryptsetup remove /dev/block-device-name (removing LUKS utility from Disk).
+
+5. rm cryptfile (removing cryptfile which we used to store passwd which was used during booting).
+
+6. # the entry in /etc/crypttab
+
+7. # the entry in /etc/fstab 
+
+Done 

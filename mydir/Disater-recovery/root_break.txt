@@ -1,0 +1,4 @@
+mount -o remount rw /sysroot
+chroot /sysroot
+passwd root
+touch /.autorelabel

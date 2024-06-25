@@ -1,0 +1,36 @@
+yum install nginx* -y
+
+systemctl start nginx.service
+
+systemctl enable nginx.service
+
+make sure u have added http service in firewall
+
+vim /etc/nginx/nginx.conf (open /etc/nginx/nginx.conf file)
+
+comment server from start till end 
+
+inside http '}'(curly bracket  mention the below detail
+
+#start
+upstream backend {
+server localhost:port;
+server localhost:port;
+}
+server {
+listen 80;
+server_name localhost;
+location / {
+proxy_pass http://backend;
+}
+}
+#end
+
+:wq!
+
+setenforce 0 (to make selinux permissive).
+
+systemctl restart nginx.service
+
+done.
+ 

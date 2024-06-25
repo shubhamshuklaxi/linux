@@ -1,0 +1,20 @@
+Steps to create mqsql_db
+
+1. yum install mysql* -y
+
+2. mysql_secure_installation
+
+set password 
+no
+y
+y
+y
+
+done.
+
+3. mysql -u root
+
+>create user 'username' identified by 'password' ;
+>create database dbname ;
+>grant all privileges on dbnanm.* to 'username' ;
+>show databases ;

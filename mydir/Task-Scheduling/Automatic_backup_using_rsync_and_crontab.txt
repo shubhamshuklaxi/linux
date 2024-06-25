@@ -1,0 +1,9 @@
+-- yum install rsync* -y (installing rsync packages).
+
+-- systemctl start rsyncd.service
+
+-- systemctl enable rsyncd.service
+
+-- systemctl status rsyncd.service
+
+-- rsync -arvh -e  ssh source-file-path username@destination-ip:destination-path

@@ -1,0 +1,87 @@
+
+
+Jenkins is an open-source software for continuous software development. It is based on Java and it is the only tool which can be used in every part of software development cycle.
+
+What is Jenkins ?
+
+Jenkins is a CI/CD tool. Here CI means continuous integration and CD means continuous delivery. Jenkins is also considered as automation tool or server, It helps to automate software development which are related to building, testing and deploying. It is a server-based tool which runs on servlet containers like Apache Tomcat.
+
+
+
+
+Why do we need Jenkins tool?
+
+As maximum organization is now having agile process. Agile methodology is a practice that promotes both continuous integration and continuous delivery, it has scrum process that can be of 2/3 weeks, which is also known as scripts. In every sprint developers and tester has to do continuous development and testing with continuous integration and continuous delivery. In every sprint client get the privilege to check that the software/application is building according to the given requirement. They also have the leverage to change/update the requirement according to their business needs. This is one of the main reasons why Jenkins is one of the most popular tools in the market nowadays.
+
+Prerequisites:
+
+    Minimal CentOS 8 / RHEL 8
+    User with sudo rights
+    Stable Internet Connection
+    For RHEL 8 system, active subscription is required.
+
+Jenkins Lab details:
+
+
+
+    Host Name: Jenkins.shubham.com
+    IP Address: 192.168.96.188
+    SELinux : Enabled
+    Firewall: Running
+
+
+hostnamectl set-hostname Jenkins.shubham.com
+
+vim /etc/hosts
+
+192.168.96.188 Jenkins.shubham.com
+
+:wq!
+
+dnf update -y
+
+init 6
+
+dnf install wget -y
+
+wget http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo -O /etc/yum.repos.d/jenkins.repo
+
+rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+
+dnf install -y java-11-openjdk-devel
+
+java --version
+
+yum install java -y
+
+dnf install -y jenkins*
+
+systemctl start jenkins
+
+systemctl enable jenkins
+
+systemctl status jenkins
+
+firewall-cmd --permanent --add-port=8080/tcp
+
+firewall-cmd --reload
+
+http://<Server-IP>:8080
+
+cat /var/lib/jenkins/secrets/initialAdminPassword (copy passwd).
+
+paste passwd in website.
+
+install suggested plugins
+
+create first admin user
+
+save and continue
+
+save and finish
+
+restart
+
+sign in
+
+

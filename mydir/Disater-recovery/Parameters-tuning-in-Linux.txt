@@ -1,0 +1,11 @@
+sysctl -a (to list the value of kernel parameters).
+
+ll /proc/sys/kernel/ (list kernel parameters file).
+
+sysctl -w net.ipv4.ip_forward=0 (to set temporarily value of kernel parameters).
+
+vim /etc/sysctl.conf (make entry in the /etc/sysctl.conf file to make kernel parameters value permanent).
+
+sysctl -p (to reload kernel parameters value).
+
+Done.

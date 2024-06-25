@@ -1,0 +1,41 @@
+nmcli device status (to list device status).
+
+/etc/sysconfig/network-scripts/ (directory has active connection's config file).
+
+nmcli connection show (to show all connections). 
+
+nmcli device show (to display details of device).
+
+nmcli connection show -a (to show all active connections).
+
+nmcli connection down connection-name (to down connection).
+
+nmcli connection up connection-name (to up connection).
+
+ifdown connection-name (to down connection).
+
+ifup connection-name (to up connection).
+
+nmcli connection add type ethernet con-name connection-name ifname device-name  (to create connection from device).
+
+nmcli connection modify connection-name connection.autoconnect yes (to autoconnect after reboot).
+
+nmcli connection connection-name enp0s8 connection.permissions username (to give permission for user to modify connection).
+
+nmcli connection modify enp0s8 connection.permissions user:u1,u2 (to give permission for multiple user to modify connection).
+
+nmcli connection reload (to reload all connections).
+
+nmcli connection edit connection-name  (to interactively modify connection).
+
+nmcli connection modify enp0s8 ipv4.addresses ipv4 ipv4.gateway gateway ipv4.dns dns ipv4.method manual (to add ipv4, gateway and dns manually).
+
+nmcli connection modify enp0s8 +ipv4.addresses ipv4 +ipv4.gateway gateway +ipv4.dns dns ipv4.method manual (to add secondary ipv4, gateway and dns manually).
+
+nmcli connection modify enp0s8 -ipv4.addresses ipv4 -ipv4.gateway gateway -ipv4.dns dns (to remove ipv4, gateway and dns).
+
+nmcli connection delete connection-name (to delete a connection).
+
+nmcli device delete device-name (to delete a device).
+
+

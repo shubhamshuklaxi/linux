@@ -1,0 +1,56 @@
+--uname -r (to display kernel release).
+
+-- cat /proc/cmdline  (to see which parameters kernel used during boot).
+
+To change the kernel parameters during boot we have to press e at grub menu.
+
+Then change the parameters 
+
+press Control+x
+
+done.
+
+-- init = /bin/bash (to set machine into single user for ubantu)
+
+-- rd.bread (to set machine into single user for rhel8).
+
+-- dmesg (to view kernel ring buffer messages).
+
+-- /usr/src/kernels/ (this dir has kernel source code).
+
+-- /lib/modules (this dir has kernel modules related files).
+
+-- lsmod (to see the kernel modules).
+
+-- /boot/initramfs-4.18.0-348.7.1.el8_5.x86_64.img (initramfs file loads before kernel loading and resposible for initiazing hardware through kernel modules so that kernel can be load).
+
+-- /boot/System.map-4.18.0-348.7.1.el8_5.x86_64 (this file contains symbol tables and changes with every kernel you compile).
+
+-- /boot/config-4.18.0-348.7.1.el8_5.x86_64  (this file use to recompile kernel).
+
+-- Kernel Modules: modules are piece of code which can be loaded and unloaded by kernel for difference features and functions.
+
+
+-- insmod or modprobe (command is use to reload modules).
+
+-- modinfo (to view module info).
+
+-- rmmod (to remove or unload module).
+
+-- /etc/modprobe.d/ (files inside modprobe.d/ use to manage dependencies by modprobe).
+
+-- Libraries files have dependencies which used by the several or single program.
+
+-- ldd (command is use to list dependecies).
+
+-- ltrace (command use to display how function called library).
+
+-- ltrace -c -l /lib/libopamgt.so.0 su - shubham
+
+-- rpm -qf /lib/libopamgt.so.0 (to check which package library belongs).
+
+-- strace -o strace.txt vi cal.txt  (to modify read only file).
+
+
+
+-- 

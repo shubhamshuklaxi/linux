@@ -1,0 +1,231 @@
+DNS (Domain Name System) 
+Every Computer on internet uses DNS server.
+The orgs have more than 1 DNS server.
+Personel area networks have built in DNS server.
+
+The domain name system or dns is a service on tcp/ip network that enables clients to translate names into ip-address.
+
+Forward and reverse lookup queries:
+
+The question a client asks a dns server is called a query.
+
+When client queries for an ip-address, This is called forward lookup query:
+
+[root@dns-server ~]# nslookup dns-server.shubham.local
+Server:		192.168.123.161
+Address:	192.168.123.161#53
+
+Name:	dns-server.shubham.local
+Address: 192.168.123.161
+
+
+When client queries for a name, This is called reverse lookup query:
+
+[root@dns-server ~]# nslookup 192.168.123.161
+161.123.168.192.in-addr.arpa	name = dns-server.shubham.local.
+
+To use a dns server we have mention ip of that dns server in /etc/resolv.conf file 
+
+vim /etc/resolv.conf
+
+nameserver dns-ip
+
+:wq!
+
+.arpa is used for reverse lookup via in-addr.arpa
+
+Fully Qualified Domain Name(fqdn):
+
+A fqdn is the combination of the hostname of a machine appended with its domain name.
+
+domainname --fqdn (to check fqdn).
+
+DNS Records:
+
+A Records:
+
+Which is also called a host record contains the ipv4 address of a computer
+When a dns client queries a dns server for an a record, then the dns server
+will resolve the hostname in the query to an ip-address.
+An AAAA record is similar but contains and ipv6 address instead of ipv4.
+
+PTR Record:
+
+A PTR Record is the reverse of an A Record
+It conatins the name of the computer and can be used to resolve an ip address to a hostname.
+
+NS Record:
+
+A NS Record or nameserver record is a record that points to a dns name server (in this zone).
+You can list all your name server for dns zone in distinct NS Records.
+
+glue A Record:
+
+An A record that maps the name of a NS record to an ip address is said to be a glue A record.
+
+SOA Record:
+
+The SOA Record of a zone contains meta info about the zone itself.
+
+The CNAME Record:
+
+A CNAME Record maps a hostname to a hostname,
+creating effectively an alis for an existing hostname.
+the name of mail server is often called mail or smtp,
+and the name of a webserver to www.
+
+MX Record:
+
+THE MX Record points to an smtp server. When you send and email to another domain,
+then your mail server will need MX Record of the target domain's mail server.
+
+#Extra Notes:
+
+TTL stands for time to live
+
+IN stands for internet
+
+
+#Follow below steps to configure DNS server:
+
+#Set Hostname:
+
+hostnamectl set-hostname dns-server.shubham.local (You can set any hostname).
+
+#Install Dependencies:
+
+dnf install bind bind-utils -y
+
+#Start and Enable named service:
+
+systemctl enable --now named.service
+
+#Create backup of named.conf file:
+
+cp /etc/named.conf /etc/named.conf.bkp
+
+#Now open named.conf file comment below two line of options function,at allow-query mention first 3 subnet of your server ip address same and last subnet should be 0 with ;and space also mention settings details for forward and reverse lookup zone:
+
+vim /etc/named.conf
+
+options {
+//      listen-on port 53 { 127.0.0.1; };
+//      listen-on-v6 port 53 { ::1; };
+        directory       "/var/named";
+        dump-file       "/var/named/data/cache_dump.db";
+        statistics-file "/var/named/data/named_stats.txt";
+        memstatistics-file "/var/named/data/named_mem_stats.txt";
+        secroots-file   "/var/named/data/named.secroots";
+        recursing-file  "/var/named/data/named.recursing";
+        allow-query     { localhost; 192.168.123.0/24; };
+
+
+// Forward zone
+
+zone "shubham.local" IN {
+        type master;
+        file "shubham.local.fw";
+        allow-update { none; };
+        allow-query {any; };
+};
+
+// Reverse Lookup Zone
+
+zone "123.168.192.in-addr.arpa" IN {
+        type master;
+        file "shubham.local.rv";
+        allow-update { none; };
+        allow-query {any; };
+};
+
+:wq!
+
+#Now go into /etc/named and create forward and reverse lookup zone file that you have mentioned at /etc/named.conf:
+
+cd /var/named/
+
+vim shubham.local.fw
+
+$TTL 1D
+@       IN SOA  dns-server.shubham.local. admin.shubham.local. (
+                                        0       ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H      ; minimum
+)
+;Name Server infromation
+
+@ IN NS dns-server.shubham.local.
+
+;IP Address for Name Server
+
+dns-server IN A 192.168.123.161
+
+;Mail Server MX (Mail Exchanger) Record
+shubham.local. IN MX 160 mail.shubham.local.
+;A Record for the following Hostname
+www IN A 192.168.123.150
+mail IN A 192.168.123.160
+;CNAME Record
+ftp IN CNAME www.shubham.local.
+
+:wq!
+
+vim shubham.local.rv
+
+$TTL 1D
+@       IN SOA  dns-server.shubham.local. admin.shubham.local. (
+                                        0       ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H     ; minimum
+
+)
+;Name Server Information
+@ IN NS dns-server.shubham.local.
+dns-server IN A 192.168.123.161
+;Reverse Lookup for Name Server
+161 IN PTR dns-server.shubham.local.
+;PTR Record IP Address tp Hostname
+150 IN PTR www.shubham.local.
+160 IN PTR mail.shubham.local.
+
+
+:wq!
+
+
+#Change the owner and group of both the files:
+
+chown named:named shubham.local.fw
+
+chown named:named shubham.local.rv
+
+
+#Run named-checkconf if there is no error then go ahead:
+
+named-checkconf
+
+#Check both fw and rv lookup zone file using named-checkzone command:
+
+named-checkzone shubham.local /var/named/shubham.local.fw
+
+named-checkzone shubham.local /var/named/shubham.local.rv
+
+named-checkzone 192.168.123.161 /var/named/shubham.local.rv
+
+#Add dns service in firewall:
+
+firewall-cmd --permanent --add-service=dns
+
+firewall-cmd --reload
+
+#Now restart named service
+
+systemctl restart named.service
+
+systemctl status named.service
+
+
+

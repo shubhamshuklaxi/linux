@@ -1,0 +1,8 @@
+
+
+1. yum install dhcp* -y
+
+2. cp /usr/share/doc/dhcp-server/dhcpd.conf.example /etc/dhcp/dhcpd.conf
+
+3. 
+

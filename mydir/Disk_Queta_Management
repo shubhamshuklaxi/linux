@@ -1,0 +1,21 @@
+***Disk Queta Management(DQM)**
+
+a. softlimit=warning
+
+b. hardlimit=restriction
+
+
+1. rpm -qa quota or yum check quata.
+
+2. mkfs.ext4 /dev/block-device-name 
+
+3. mkdir /dir
+
+4. make entry in /etc/fstab
+
+5. mount /dev/block-device-name /dir
+
+6. make usrquota,grpquota beside defaults option in fstab of /dev/block-device-name
+
+7. 
+

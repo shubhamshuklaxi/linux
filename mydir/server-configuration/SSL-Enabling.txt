@@ -1,0 +1,44 @@
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+firewall-cmd --reload 
+
+
+dnf install httpd openssl mod_ssl -y
+
+systemctl enable --now httpd
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout localhost.key -out localhost.crt
+
+cp -r localhost.crt /etc/pki/tls/certs/
+cp -r localhost.key /etc/pki/tls/private/
+
+httpd -t
+
+cat /etc/httpd/conf.d/ssl.conf |grep local
+
+vim /etc/httpd/conf.d/httpd.conf
+
+<VirtualHost *:443>
+SSLEngine on
+SSLCertificateFile /etc/pki/tls/certs/localhost.crt
+SSLCertificateKeyFile /etc/pki/tls/private/localhost.key
+ServerName dns-server.shubham.local
+DocumentRoot /var/www/html
+</VirtualHost>
+
+:wq!
+
+httpd -t
+
+systemctl restart httpd
+
+systemctl status httpd
+
+vim /etc/hosts
+
+ip name
+
+:wq!
+
+systemctl restart httpd
+

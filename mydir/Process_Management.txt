@@ -1,0 +1,159 @@
+-----*Process Management in Linux*-----:
+
+Definition: a compiled source code that runs into the system uses RAM is known as process.
+
+1. each process has a unique id alloted by the system to identify it individualy.
+
+2. When a process stops running it dies or we can kill process manaully.
+
+3. A process which stops when system shutdown and starts autumatically when again system starts called as daemon process and deamons never die.
+
+4. A process which has been killed still it shows in system known as zombie process a zombie process can not be killed as it's already dead, it does'nt uses system resources.
+
+parent process id(PPID):
+
+A process which runs multiple or a single process under it is known as parent process.
+
+systemd is a parent process , all processes of the system run under the systemd process.
+
+--- echo $$ or ps -C shell-name to show the process id of current shell.
+
+--- echo $PPID to show PPID of current shell.
+
+--- ps -C process-name or pidof process-name to show pid of any process.
+
+
+Fork: when an original process split itself into another process is called forked.
+
+Fork and Exec: when an original processs forked itself and creates and identical copy of it's child process is knows as forked and exec.
+
+Below is example of fork and exec:
+
+[root@shubham ~]# echo $$
+10846
+[root@shubham ~]# echo $PPID
+4846
+[root@shubham ~]# zsh
+[root@shubham]~# exec bash
+[root@shubham ~]# exit
+[root@shubham ~]# echo $$
+10846
+[root@shubham ~]# echo $PPID
+4846
+[root@shubham ~]# zsh
+[root@shubham]~# echo $$
+13100
+[root@shubham]~# echo $PPID
+10846
+[root@shubham]~# exec bash
+[root@shubham ~]# echo $$
+13100
+[root@shubham ~]# echo $PPID
+10846
+ 
+
+ps fx to display details of all running process in system.
+
+Processes are displayed in the below format:
+
+PID(process-id).
+ 
+TTY(terminal).
+      
+STAT(process-state).   
+
+TIME(cumulative CPU time). 
+
+COMMAND(see args.  (alias args, command)).
+
+ps -ef is also used to display details of all running process in system.
+
+Processes are displayed in the below format:
+
+UID(user-id).
+
+PID(process-id).  
+
+PPID(parent-process-id).
+
+C(CPU utilization). 
+
+STIME(start-time). 
+
+TTY(the device number of the controlling tty).  
+
+TIME(cumulative CPU time). 
+
+CMD(see args.  (alias args, command)).
+
+
+PROCESS STATE CODES:
+       Here are the different values that the s, stat and state output specifiers (header "STAT" or "S") will
+       display to describe the state of a process:
+
+               D    uninterruptible sleep (usually IO)
+               I    Idle kernel thread
+               R    running or runnable (on run queue)
+               S    interruptible sleep (waiting for an event to complete)
+               T    stopped by job control signal
+               t    stopped by debugger during the tracing
+               W    paging (not valid since the 2.6.xx kernel)
+               X    dead (should never be seen)
+               Z    defunct ("zombie") process, terminated but not reaped by its parent
+
+       For BSD formats and when the stat keyword is used, additional characters may be displayed:
+
+               <    high-priority (not nice to other users)
+               N    low-priority (nice to other users)
+               L    has pages locked into memory (for real-time and custom IO)
+               s    is a session leader
+               l    is multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
+               +    is in the foreground process group
+
+
+
+pgrep process-name to grep processes.
+
+pstree to display process tree.
+
+pstree -p to display pstree with process-id.
+
+pstree -p -u username to display process run by the user.
+
+pstree -p -s pid to display process tree. 
+
+
+Steps to kill process using various way:
+
+kill -l
+
+ 1) SIGHUP	 2) SIGINT	 3) SIGQUIT	 4) SIGILL	 5) SIGTRAP
+ 6) SIGABRT	 7) SIGBUS	 8) SIGFPE	 9) SIGKILL	10) SIGUSR1
+11) SIGSEGV	12) SIGUSR2	13) SIGPIPE	14) SIGALRM	15) SIGTERM
+16) SIGSTKFLT	17) SIGCHLD	18) SIGCONT	19) SIGSTOP	20) SIGTSTP
+21) SIGTTIN	22) SIGTTOU	23) SIGURG	24) SIGXCPU	25) SIGXFSZ
+26) SIGVTALRM	27) SIGPROF	28) SIGWINCH	29) SIGIO	30) SIGPWR
+31) SIGSYS	34) SIGRTMIN	35) SIGRTMIN+1	36) SIGRTMIN+2	37) SIGRTMIN+3
+38) SIGRTMIN+4	39) SIGRTMIN+5	40) SIGRTMIN+6	41) SIGRTMIN+7	42) SIGRTMIN+8
+43) SIGRTMIN+9	44) SIGRTMIN+10	45) SIGRTMIN+11	46) SIGRTMIN+12	47) SIGRTMIN+13
+48) SIGRTMIN+14	49) SIGRTMIN+15	50) SIGRTMAX-14	51) SIGRTMAX-13	52) SIGRTMAX-12
+53) SIGRTMAX-11	54) SIGRTMAX-10	55) SIGRTMAX-9	56) SIGRTMAX-8	57) SIGRTMAX-7
+58) SIGRTMAX-6	59) SIGRTMAX-5	60) SIGRTMAX-4	61) SIGRTMAX-3	62) SIGRTMAX-2
+63) SIGRTMAX-1	64) SIGRTMAX	
+
+
+kill -15 pid (to terminate a running process).
+
+kill -9 pid (to kill process from kernel).
+
+kill -19 pid (to stop process).
+
+kill -18 pid (to start stopped process using kill -19 signal).
+
+pkill psname (to kill all process start with the mentioned name).
+
+killall psname1 psname2 (to kill multiple process using prefix).
+
+strace -p pid (to trace process using pid).
+
+

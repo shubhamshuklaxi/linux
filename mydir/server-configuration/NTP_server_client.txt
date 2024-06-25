@@ -1,0 +1,63 @@
+Steps to configure NTP-server-client in RHEL8:
+
+At sever end:
+
+1. yum install chrony* -y
+
+2. systemctl start chronyd.service
+
+3. systemctl enable chronyd.service
+
+4. systemctl status chronyd.service
+
+5. vim /etc/chrony.conf
+
+# Allow NTP client access from local network.
+allow destinationIP/prefix
+
+save and quit!
+
+6. systemctl restart chronyd.service
+
+7. systemctl status chronyd.service
+
+8. firewall-cmd --permanent --add-service=ntp
+
+9. firewall-cmd --reload
+
+10. chronyc clients
+
+
+At client end:
+
+
+1. yum install chrony* -y
+
+2. systemctl start chronyd.service
+
+3. systemctl enable chronyd.service
+
+4. systemctl status chronyd.service
+
+5. vim /etc/chrony.conf
+
+# Please consider joining the pool (http://www.pool.ntp.org/join.html).
+#pool 2.centos.pool.ntp.org iburst (make # before pool)
+
+server server-ip
+
+save and quit!
+
+6. systemctl restart chronyd.service
+
+7. systemctl status chronyd.service
+
+8. chronyc sources
+
+Done!
+
+
+
+
+
+

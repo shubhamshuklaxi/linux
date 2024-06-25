@@ -1,0 +1,34 @@
+Steps to conifure SMTP:
+
+1. rpm -qa|grep sendmail
+
+2. rpm -qa|grep postfix
+
+3. systemctl stop postfix
+
+4. yum install sendmail* -y
+
+5. rpm -qa|grep sendmail
+
+6. vim/etc/mail/sendmail.mc
+
+dnl DAEMON_OPTIONS(`Port=smtp,Addr=127.0.0.1, Name=MTA')dnl
+
+save the file
+
+7. vim /etc/mail/local-host-names
+
+# local-host-names - include all aliases for your machine here.
+kumar.shukla
+shubham.kumar.shukla
+
+save the file
+ 
+
+8. systemctl start sendmail.service
+
+9. systemctl enable sendmail.service
+
+10. systemctl status sendmail.service
+
+

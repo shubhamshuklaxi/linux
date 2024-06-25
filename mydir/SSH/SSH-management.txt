@@ -1,0 +1,132 @@
+*Steps to install SSH*
+
+1. yum install openssh* -y.
+
+2. systemctl start sshd.service.
+
+3. systemctl enable sshd.service.
+
+4. systemctl status sshd.service.
+
+5. /etc/ssh/sshd_config this file has SSH setting related details.
+
+6. ssh ip or hostname -p port-number
+
+7. vim /etc/hosts (mention ip and hostname to access ssh using hostname).
+
+
+
+*Steps to enable keybased authentication*
+
+
+1. cd /root/.ssh
+
+2. ssh-keygen -t rsa | ssh-keygen -t dsa (generating public and private keys).
+
+3. ssh-copy-id -i /root/.ssh/id_rsa.pub root@ip-or-hostname.
+
+4. ssh-copy-id -i root@user-machine-ip (to provide user keybased login).
+
+done.
+
+*How to add prelogin banner for SSH*
+
+
+1. vim /etc/ssh/sshd_config.
+
+Banner /etc/ssh/banner.txt
+
+save and exit!
+
+2. systemctl restart sshd.service.
+
+
+
+*How to add postlogin banner for SSH*
+
+
+1. vim /etc/motd (enter text).
+
+2. systemctl restart sshd.service
+
+
+*How disable root login in SSH*
+
+
+1. vim /etc/ssh/sshd_config. 
+
+PermitRootLogin no
+
+save and exit!
+
+*How to change port in SSH*
+
+1. vim /etc/ssh/sshd_config.
+
+Port port-number
+
+save and exit!
+
+2. firewall-cmd --permanent --add-port=port-number/tcp
+
+3. firewall-cmd --reload
+
+4. semanage port --add --type ssh_port_t -p tcp port-number
+
+
+Done!
+
+
+1. vim /etc/ssh/sshd_config.
+
+
+AllowUsers username
+DenyUsers username
+AllowGroups groupname
+DenyGroups groupname
+
+AllowUsers *@ip/prefix
+DenyUsers *@ip/prefix
+AllowGroups *@ip/prefix
+DenyGroups *@ip/prefix
+
+save and exit!
+
+enter above deny/allow users,groups to give and deny access to a paritcular user,group and ip.
+
+ 
+
+*Steps to setup SSH login alerts*
+
+1. yum install mailx* sendmail* -y
+
+2. systemctl start sendmail.service
+
+3. systemctl enable sendmail.service
+
+4. systemctl status sendmail.service
+
+5. vim /root/.bashrc
+
+echo ALERT - Root Shell Access "$HOSTNAME" on: `date` `who` | mail -s "Root account has been accessed" shubhamshuklax7@gmail.com
+
+save and exit!
+
+
+done.
+
+sshpass command uses:
+
+sshpass -p 'passwd' ssh server-ip -l username -o StrictHostKeyChecking=no (login without entering passwd)
+
+sshpass ssh 192.168.117.12 -l root -o StrictHostKeyChecking=no -P (login with entering passwd).
+
+sshpass rsync -av --progress cal.txt root@192.168.117.12:/tmp/ -P (copying file without entering passwd).
+
+sshpass -p 'root' rsync -av --progress cal.txt root@192.168.117.12:/tmp/ (copying file with entering passwd).
+
+sshpass -f password ssh 192.168.117.12 -l root -o StrictHostKeyChecking=no (login using passwd stored in file).
+
+sshpass -p 'passwd' ssh server-ip -l username -o StrictHostKeyChecking=no 'command -a' (executing commands without going into the terminal). 
+
+

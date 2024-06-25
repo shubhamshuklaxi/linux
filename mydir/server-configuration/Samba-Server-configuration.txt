@@ -1,0 +1,118 @@
+1. yum install samba* -y
+
+2. net config workstation (use this command on window cmd).
+
+3. mkdir /anonymous 
+
+4. chmod 777 /anonymous
+
+5. semanage fcontext --add --type samba_share_t /anonymous
+
+6. restorecon /anonymous
+
+7. chown nobody:nobody /anonymous/ 
+
+-- man smb.conf (to read config file manual).
+
+8. vim /etc/samba/smb.conf
+
+[global]
+        workgroup = WORKGROUP
+        server string = samba server %v
+        netbios name = centos
+        security = user
+        map to guest = bad user
+        dns proxy = no
+
+[anonymous]
+path=/anonymous
+writable=yes
+guest ok=yes
+browseable=yes
+read only=no
+
+:wq!
+
+-- testparm (to check file).
+
+9. firewall-cmd --permanent --add-service=samba
+
+10. firewall-cmd --reload
+
+11. systemctl enable --now smb.service
+
+12. systemctl enable --now nmb.service
+
+13. systemctl status smb.service
+
+14. systemctl status nmb.service
+
+15. systemctl restart smb.service
+
+16. systemctl restart nmb.service
+
+now  try to login from window machine and linux machine.
+
+
+Steps to create secured Samba Sever:
+
+1. groupadd securedgrp
+
+2. useradd -G securedgrp securedusr
+
+3. passwd securedusr
+
+4. mkdir /secureddir
+
+5. chmod 770 /secureddir
+
+6. semanage fcontext --add --type samba_share_t /secureddir
+
+6. restorecon /secureddir
+
+7. chown root:securedgrp /secureddir
+
+8. smbpasswd -a securedusr
+
+9. vim /etc/samba/smb.conf
+
+[secured]
+path=/secureddir
+valid users=@securedgrp
+writable=yes
+guest ok=no
+browseable=yes
+
+:wq!
+
+10. systemctl restart smb.service
+
+11. systemctl restart nmb.service
+
+
+Steps to access samba server at linux client.
+
+1. yum install samba* 
+
+2. mkdir /sambashare
+
+3. smbclient --list=//192.168.229.188 --user=securedusr
+
+4. mount --types cifs --options username=securedusr,password=root //192.168.229.188/secured /sambashare
+
+5. vim /.smbcreds
+
+username=user
+password=password
+
+:wq!
+
+6.vim /etc/fstab
+
+//share-ip/sharename /mount-point fstype credential=/username-password-file-path,uid,gid 0 0
+
+:wq!
+
+7. mount -a
+
+

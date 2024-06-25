@@ -1,0 +1,825 @@
+Security-Enhanced Linux.
+
+
+SElinux is an implementation of a mandatory access control mechanism in linux kernel, checking for allowed operations after standard discretionary access controls are checked. It was created by the National Security Agency and can enforce rules on files and processes in linux system, and on their actions, based on defined plolicies.
+
+
+When using SElinux, files, including directories and devices, are reffered to as objects.
+Process, such as a user running a command or any application, are reffereg to as objects.
+Most OS's use a Discretionary Access Control (DAC) systems that controls how sujects
+interact with objects, and how subjects interact with each other on OS using DAC.
+Users control the permissions of files(objects).
+
+Benefits of running SELinux:
+
+All processes and files are labelled with a type.
+A type defines a domain for processes, and a type for files.
+Processes are separated from each other by running in their own domains,
+And SELinux policy rules define how processes interact with files,
+As well as how processes interact with each other.
+Access is only allowed if an SELinux policy rule exists that specifically allows it.
+
+Fine-grained access control. Stepping beyond traditional UNIX permissions that are controlled
+At user discretion and based on linux user and group ID's, SELinux access decisions are based on all available info, such as an SELinux user, role, type, and, optionally a level.
+
+SELinux policies are administratively-defined enforced system wide, and
+Is not set at users discretion.
+
+Reduced vulnerabilty to privilege escalation attacks,
+Process run in domains and are therefore separated from each other.
+SELinux policies rules define how processes will access files and other processes.
+if a processes is compromised, the attacker will only has privilege to the
+Normal funtions of that process, and to files the process has been configured to 
+have access to. For example, if the apache server is compromised, an attacker can not use
+that process to read files in users home dirs, unless a specific SELinux policy rule was
+Added to allow such access.
+
+SELinux can be used to enforce data confidentiality and integrity as well as
+Protecting proccess from untrusted inputs.
+
+SElinux is all about labeling, and it makes decision based on the label.
+
+SElinux has 4 forms of access control:
+
+1. Targeted Enforcement (TE).
+
+2. Strict -: Targeted Enforcement on steroid.
+
+3. Role-Based Access Control (RBAC) -: Defines Role for users.
+
+4. Multi-Level Security (MLS).
+
+
+SElinux is not:
+
+A replacement for passwords, firewalls, or other security systems.
+
+Antivirus software.
+
+An all-in-one security solution.
+
+
+SELinux is designed to enhance security solutions, not replace them.
+Even when running SELinux, it is important to continue follow good security rules, such as
+Keeping software upto date using hard to guess passwords, firewalls.
+
+How SELinux increases security:
+
+
+The default option is deny, if an SELinux policy rule does not exist to allow access,
+Such as for a process opening a file, access is denied.
+
+SELinux can confine linux users. A number of confined SELinux users exist in SELinux policy,
+Linux users can be mapped to confined SELinux users to take advantages of the security rules and mechanisms
+Applied to them.
+
+
+Process separation is used, processes run in their own domains, preventing processes from
+Acessing files used by other processes, as well as preventing processes from acccessing other 
+Processes.
+
+SELinux helps limits the damage.
+
+SELinux architecture:
+
+SELinux is a linux security module that module that is built into the linux kernel.
+SELinux is driven by teh loadable policy rules, when security relevent access is taking place,
+Such as when a process attemps to open a file, The operation is intercepted in the kernel by
+SELinux. If an SELinux policy rule allows the operations, it continues, otherwise, the operation is
+Blocked and process receives and error.
+
+SELinux decisions, such as allowing or disallowing access, are cached.
+This cache is known as the "access vector cache" (AVC). when using these cached decision
+SElinux policy rules need to e checked less, which increases the performance.
+Remember that SELinux policy rules have no affect if DAC rules deny access first.
+
+
+The feilds in a security context are:
+
+user:role:type:level
+
+A sample security context:
+
+system_u:object_r:admin_home_t:s0
+
+
+SElinux has three modes of operation:
+
+
+Disabled -: SElinux enforcement entirely turned off and also the creation of proper labels on the files no longer takes place.
+
+SELinux is disabled, only DAC rules are used.
+
+Permissive -: The kernel will also continue to create properly labeled files, with all system access checks, and report Access Violations in the form Access Vector Cache (AVC) messages but will allow the access.
+
+SELinux policy is not enforced. SELinux does not deny access.
+but denials are logged for actions that would have been denied if running in enforing mode.
+
+
+Enforcing -: This tells the system to run with SElinux labeling files with proper contexts, watching all system access checks, stopinf all "Denied" access, and logging all AVC violations.
+
+SELinux policy is enforced. SELinux denies access based on SELinux policy rules.
+
+To see the current SElinux mode, do getinforce or setstatus.
+
+
+SElinux setting related info are stored in /etc/selinux/config file.
+
+
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+SELINUX=enforcing
+# SELINUXTYPE= can take one of these three values:
+#     targeted - Targeted processes are protected,
+#     minimum - Modification of targeted policy. Only selected processes are protected. 
+#     mls - Multi Level Security protection.
+SELINUXTYPE=targeted
+
+
+setenforce enforcing 
+
+setenforce permissive
+
+
+SELinux Contexts:
+
+Processes and files are labelledwith an SELinux context that contains additional information, such as and SELinux user, role, type, and, optionally, a level, when running SELinux, sll of this information is used to make access control decisions. In fedora, SELinux provides a combination of role based Access Control (RBAC), Type Enforement (TE), and, optionally, Multi-Level-Security (MLS).
+
+The follwing exmaple is an example showing SELinux context. SELinux contexts are used on Processes, Linux users, and files on Linux OS system that runs SELinux, USe the following command to view the SELinux context of files and directories.
+
+[root@user ~]# ll -Z file.txt 
+-rw-r--r--. 1 root root unconfined_u:object_r:admin_home_t:s0 0 Apr 18 01:31 file.txt
+
+SELinux contexts follow the SELinux user:role:type:level syntax. The fields are as follows:
+
+SELinux user:
+
+SELinux user The SELinux user identity known to the policy that is authorized for a specific set of roles, 
+And for a specific MLS/MCS range. Each Linux user is mapped to an SELinux user via SELinux policy.
+This allows Linux users to inherit the restrictions placed on SELinux users.
+The mapped SELinux identity is used in the SELinux context for proccesses in that session,
+In order to define what roles and levels they can enter.
+
+[root@puppetmaster ~]# semanage login --list (dispaly all SELinux users).
+
+Login Name           SELinux User         MLS/MCS Range        Service
+
+__default__          unconfined_u         s0-s0:c0.c1023       *
+root                 unconfined_u         s0-s0:c0.c1023       *
+
+The Login Name Column lists Linux users.
+
+The SELinux User column lists which SELinux user The Linux user is mapped to.
+For processes, the SELinux user limits which roles and levels are accessible.
+
+The MLS/MCS Range column is the level used by Multi-Level Security (MLS) 
+And Multi-category Security (MCS).
+
+The services column determines the correct SELinux context, in which SELinux user is
+Supposed to be logged in to the system. By default the * is used which stands for any service.
+
+
+Role:
+
+Part of SELinux is the Role-Based Access Control (RBAC) security model.
+The role is an attribute of RBAC. SELinux users are authorised for roles,
+And roles are authorized for domain.
+The serves as an inermediary between domains and SELinux users.
+The roles that can be entered determine which domains can be entered;
+Ultimately, this controls which object type can be accessed.
+This helps reduce vulnerablity to privilege escalation attacks.
+
+Type:
+
+The type is an attribute of Type Enforcement.
+The types define a do domain for processes,
+And a type for files.
+SELinux policy rules define how types can access each other
+Whether it be a domain accessing a type or a domain accessing.
+Access is only allowed if a specific SELinux policy rule exits that allow it.
+
+Level:
+
+The level is an attribute of MLS and MLC, An MLS range is a pair of levels.
+Written as low level if the level differs, or low level if the level are identical
+(s0-s0 is the same as s0).
+Each level is a sensitivity category pair, which categories being optional.
+If there are categories, the level written as sensitivity:category-set.
+If there are no categories, it is wriiten as sensitivity.
+
+if the category set is a contiguous series, it can be abbreviated e.g. c0.c3 is same as c0,c1,c2,c3.
+The /etc/selinux/targeted/setrain.conf file mapped levels (s0:c0) to human-readable form (that is company confidential).
+In fedora targeted policy enforces MCS, and MCS, there is just one sensitivity , s0.
+categories: c0 through to c1023. s0-s0:c0.c1023.
+
+Domain Transitions:
+
+A process in one domain trasitions to another domain by executing an application that has the entry point type for the new domain.
+The entry point permission is used in SELinux policy and controls which applications can be used to enter a domain.
+The follwoing e.g. demonstrates a domain transition:
+
+1. A user wants to change their password. To do thid they run passwd utility.
+The /usr/bin passwd executable is labelled with the passwd_exec_t type.
+
+[root@server ~]# ll -Z /usr/bin/passwd 
+-rwsr-xr-x. 1 root root system_u:object_r:passwd_exec_t:s0 33600 Apr  7  2020 /usr/bin/passwd
+
+The passwd utility accessed /etc/shadow, which is labelled with the shadow_t type:
+
+[root@server ~]# ll -Z /etc/shadow
+----------. 1 root root system_u:object_r:shadow_t:s0 3075 Apr  9 19:18 /etc/shadow
+
+2.An SELinux policy rule states that processes running in the passwd domain are allowed to read and write to files
+Labelles with shadow_t type.
+The shadow_t type is only applied to files that are required for a password change.
+This includes /etc/gshadow, /etc/shadow and their backup files.
+
+3. An SELinux policy rule states the passwd_t domain has the access to the passwd_exec_t type.
+
+4. When a user runs the passwd utility, the user's shell process transitions to the passwd_t domain.
+With SELinux, since the deafult action is to deny , and a rule exists that allows applications running
+In the passwd_t domain to access files labelled with the shadow_t type, the passwd application is allowed
+To access /etc/shadow, and update the user's password.
+
+
+SELinux Contexts for processes:
+
+Use ps -eZ command to view the SELinux context for processes. e.g.:
+
+1 Open terminal 
+
+2. run passwd utility. Do not enter a new password:
+
+[root@server ~]# passwd shubham
+Changing password for user shubham.
+New password: 
+
+3. open new terminal 
+
+4. run ps -eZ|grep passwd
+
+[root@server ~]# ps -eZ|grep passwd
+unconfined_u:unconfined_r:passwd_t:s0-s0:c0.c1023 163523 pts/0 00:00:00 passwd 
+
+
+.
+Targeted policy:
+
+Targeted policy is the default SELinux policy used in fedora. Wehm using targeted policy,
+Processes that are targeted run in a confined domain, and processes that are not targeted run in unconfined
+domain, e.g.: by default logged-in users run in unconfined_t doamin and system processes started by init run in unconfined_service_t domain, both of these domains are unconfined.
+
+Unconfined domains (as well as confined domains) are subject to executable and writeable memory checks.
+By default, subjects running in an unconfined domain cannot allocate writeable memory and execute it.
+This reduces vulnerablity.
+These memory checks are disabled by setting booleans, which allow the SELinux policy to be modified at runtime.
+
+Confined Processes:
+
+Almost every service that listens on the network, such as sshd or httpd, is confined in fedora.
+Also most processes that run as root user and perform tasks for users, such as the passwd utility,
+are confined. When a process is confined, it runs in its own domain, such as httpd process running in
+httpd_t domain. if a confined process is compromised by an attacker, depending on SELinux policy configuration
+an attacker's access access to resources and the possible damage they can do is limited.
+
+1. Confirm that SELinux is enabled, is running in enforcing mode, and that targeted policy is being used.
+The correct output should look similar to the output below:
+
+[root@server ~]# sestatus 
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+ 
+[root@puppetmaster html]# ll -Z index.html
+-rw-r--r--. 1 root root unconfined_u:object_r:httpd_sys_content_t:s0 124 May 21 02:05 index.html
+
+changing context:
+
+[root@puppetmaster html]# chcon -t samba_share_t index.html
+[root@puppetmaster html]# ll -Z index.html
+-rw-r--r--. 1 root root unconfined_u:object_r:samba_share_t:s0 124 May 21 02:05 index.html
+
+[root@puppetmaster html]# wget http://localhost
+--2022-05-21 02:09:57--  http://localhost/
+Resolving localhost (localhost)... ::1, 127.0.0.1
+Connecting to localhost (localhost)|::1|:80... connected.
+HTTP request sent, awaiting response... 403 Forbidden
+2022-05-21 02:09:57 ERROR 403: Forbidden.
+
+We can not access file coz we have have changed the SELinux context.
+
+below are commands to chech errors in SELinux and httpd server.
+
+tail /var/log/audit/audit.log 
+tail -f /var/log/httpd/error_log
+
+
+Unconfined Processes:
+
+Unconfined processes runs in unconfined domains, e.g.: unconfined services executed by init end up running in
+the unconfined_service_t domain, unconfined services executed by kernel end up running in the kernel_t domain,
+and unconfined linux users end up running in the running in the unconfined_t domain.
+For unconfined processes SELinux policy rules are applied, but policy rules exist that allow processes running
+in unconfined domains almost all access. Processes running in the unconfined domains fall back to using DAC rules exclusively. if an unconfined process is get compromised, SELinux does not prevent an attacker from gaining access to system resources and data, but of course, DAC rules are still used. SELinux is a security enhancement 
+on top of DAC rules - it does not replace them.
+
+
+Running a confined process into unconfined domain by changing SELinux contexts:
+
+[root@puppetmaster ~]# chcon -t samba_share_t /var/www/html/index.html
+[root@puppetmaster ~]# ll -Z /var/www/html/index.html
+-rw-r--r--. 1 root root unconfined_u:object_r:samba_share_t:s0 124 May 21 02:05 /var/www/html/index.html
+[root@puppetmaster ~]# wget http://localhost
+--2022-05-21 02:49:22--  http://localhost/
+Resolving localhost (localhost)... ::1, 127.0.0.1
+Connecting to localhost (localhost)|::1|:80... connected.
+HTTP request sent, awaiting response... 403 Forbidden
+2022-05-21 02:49:22 ERROR 403: Forbidden.
+[root@puppetmaster ~]# systemctl stop httpd.service
+[root@puppetmaster ~]# cd /usr/sbin/
+[root@puppetmaster sbin]# ll -Z httpd 
+-rwxr-xr-x. 1 root root system_u:object_r:httpd_exec_t:s0 579840 Nov 12  2021 httpd
+[root@puppetmaster sbin]# chcon -t bin_t httpd 
+[root@puppetmaster sbin]# ll -Z httpd 
+-rwxr-xr-x. 1 root root system_u:object_r:bin_t:s0 579840 Nov 12  2021 httpd
+[root@puppetmaster sbin]# systemctl start httpd.service 
+[root@puppetmaster sbin]# ps -eZ|grep httpd
+system_u:system_r:unconfined_service_t:s0 750536 ? 00:00:00 httpd
+system_u:system_r:unconfined_service_t:s0 750568 ? 00:00:00 httpd
+system_u:system_r:unconfined_service_t:s0 750569 ? 00:00:00 httpd
+system_u:system_r:unconfined_service_t:s0 750570 ? 00:00:00 httpd
+system_u:system_r:unconfined_service_t:s0 750571 ? 00:00:00 httpd
+
+restorecon command to restore SELinux contexts.
+
+[root@puppetmaster sbin]# wget http://localhost
+--2022-05-21 02:53:44--  http://localhost/
+Resolving localhost (localhost)... ::1, 127.0.0.1
+Connecting to localhost (localhost)|::1|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 124 [text/html]
+Saving to: ‘index.html’
+
+index.html            100%[========================>]     124  --.-KB/s    in 0s      
+
+2022-05-21 02:53:44 (8.59 MB/s) - ‘index.html’ saved [124/124]
+
+SELinux Confined && Unconfined users:
+
+Each Linux user is mapped to an SELinux user using SELinux policy.
+This allows Linux users to inherit the restrictions on SELinux users.
+
+semanage login --list (list accounts having mapping with SELinux users).
+
+[root@puppetmaster ~]# seinfo -u  (to list available SELinux users).
+
+Users: 8
+   guest_u
+   root
+   staff_u
+   sysadm_u
+   system_u
+   unconfined_u
+   user_u
+   xguest_u
+
+
+[root@puppetmaster ~]# seinfo -r  (to list SELinux user's roles).
+
+Roles: 14
+   auditadm_r
+   dbadm_r
+   guest_r
+   logadm_r
+   nx_server_r
+   object_r
+   secadm_r
+   staff_r
+   sysadm_r
+   system_r
+   unconfined_r
+   user_r
+   webadm_r
+   xguest_r
+
+
+SELinux users capablities
+
+
+[root@puppetmaster ~]# semanage boolean --list (to list available booleans).
+SELinux boolean                State  Default Description
+
+abrt_anon_write                (off  ,  off)  Allow abrt to anon write
+abrt_handle_event              (off  ,  off)  Allow abrt to handle event
+abrt_upload_watch_anon_write   (on   ,   on)  Allow abrt to upload watch anon write
+
+
+useradd --selinux-user SELinux-username username (adding normal user to SELinux user).
+
+semanage login --modify --seuser user_u --range s0 __default__  (to map all default users to a particular SELinux user).
+
+ps axZ (to list selinux users conexts).
+
+setsebool -P ssh_sysadm_login on ( to enable users mapped to SELinux user sysadm_u to login using ssh).
+
+setsebool -P ssh_sysadm_login off ( to disble users mapped to SELinux user sysadm_u to login using ssh).
+
+
+
+Working with SELinux Packages, Logs Labeling Contexts:
+
+
+-- rpm -qi policycoreutils  (policycoreutils contains the policy core utilities that are required
+for basic operation of a SELinux system.  These utilities include
+load_policy to load policies, setfiles to label filesystems, newrole
+to switch roles.)
+
+-- rpm -qi selinux-policy (policycoreutils contains the policy core utilities that are required
+for basic operation of a SELinux system.  These utilities include
+load_policy to load policies, setfiles to label filesystems, newrole
+to switch roles.)
+
+-- rpm -qi selinux-policy-devel (SELinux policy development and man page package).
+
+-- rpm -qi selinux-policy-mls (SELinux Reference policy mls base module).
+
+-- rpm -qi setroubleshoot-server (Provides tools to help diagnose SELinux problems. When AVC messages
+are generated an alert can be generated that will give information
+about the problem and help track its resolution. Alerts can be configured
+to user preference. The same tools can be run on existing log files).
+
+-- rpm -qi setools-console
+
+SETools is a collection of graphical tools, command-line tools, and
+libraries designed to facilitate SELinux policy analysis.
+
+This package includes the following console tools:
+
+  sediff       Compare two policies to find differences.
+  seinfo       List policy components.
+  sesearch     Search rules (allow, type_transition, etc.)
+
+-- rpm -qi policycoreutils-gui (system-config-selinux is a utility for managing the SELinux environment).
+
+-- rpm -qi selinux-policy-targeted (SELinux Reference policy targeted base module).
+
+-- rpm -qi libselinux (libselinux provides an API for SELinux applications to get and set
+process and file security contexts and to obtain security policy
+decisions.  Required for any applications that use the SELinux API.)
+
+-- rpm -qi libselinux-utils ( The libselinux-utils package contains the utilities )
+
+-- rpm -qi libselinux-devel (The libselinux-devel package contains the libraries and header files
+needed for developing SELinux applications.
+ )
+
+-- tail -f /var/log/audit/audit.log (to check SELinux related logs).
+
+auditd.service rsyslog.service is responsible for managing SELinux logs.
+
+[root@puppetmaster ~]# cat /etc/selinux/config 
+
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+SELINUX=enforcing
+# SELINUXTYPE= can take one of these three values:
+#     targeted - Targeted processes are protected,
+#     minimum - Modification of targeted policy. Only selected processes are protected.
+#     mls - Multi Level Security protection.
+SELINUXTYPE=targeted
+
+-- setenforce 0 (to make selinux permissive temporarily).
+
+-- setenforce 1 (to make selinux enforcing temporarily) .
+
+-- in /etc/selinux/config file set SELINUX=permissive (to make selinux permissive permanently).
+
+-- in /etc/selinux/config file set SELINUX=enforcing (to make selinux enforcing permanently).
+
+[root@puppetmaster ~]# sestatus         (to check selinux status).
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+
+
+booleans:
+
+booleans are part of selinux policy to be change at the runtime.
+
+-- semanage boolean --list (to list all booleans)
+SELinux boolean State Default Description
+
+-- semanage boolean --list |wc -l (to count booleans)
+
+-- getsebool -a |wc -l (to count booleans).
+
+-- semanage boolean --list |grep ftp_home_dir (grep a booleans).
+
+-- getsebool ftpd_anon_write (to get status of sebool).
+
+-- setsebool ftpd_anon_write on (to active boolean temporarily).
+
+-- setsebool ftpd_anon_write on -P (to active boolean permanently).
+
+-- setsebool ftpd_anon_write off (to deactive boolean temporarily).
+
+-- setsebool ftpd_anon_write off -P (to deactive boolean permanently).
+
+-- semanage fcontext --add --type samba_share_t /test (to change context of file or dir permanently).
+
+-- restorecon /test (to apply changes of fcontext command).
+
+-- chcon -t samba_share_t /test ((to change context of file or dir temporarily).
+
+-- chcon -R -t samba_share_t /test (to change context file or sub dir inside of dir temporarily).
+
+-- semanage fcontext --add --type samba_share_t "/test(/.*)?" (to change context file or sub dir inside of dir permanently).
+
+-- restorecon /test/* (to apply changes of fcontext command).
+
+-- semanage fcontext --delete --type samba_share_t "/test(/.*)?" (to remove context file or sub dir inside of dir permanently).
+
+-- restorecon /test/* (to apply changes of fcontext command).
+
+-- tail /etc/selinux/targeted/contexts/files/file_contexts.local (to see selinux context).
+
+
+Managing Ports in selinux && preserving Contexts:
+
+
+semanage port --list (to list ports in selinux).
+
+SELinux Port Type              Proto    Port Number
+
+afs3_callback_port_t           tcp      7001
+
+
+semanage port --add --type ssh_port_t --proto tcp 1998 (adding ssh port in selinux).
+
+semanage port --delete --type ssh_port_t --proto tcp 1998 (deleting ssh port in selinux).
+
+semanage port --list |grep ssh (to search service's port).
+
+cp --preserve=context file /dir/ (to preserve file context).
+
+matchpathcon -V file or dir (to see the recomended context).
+
+tar --selinux cvf file.tar * (to preserve selinux context in tar file).
+
+star -xattr -H=exustar -c test.star file{1,2,3} 
+
+
+Information gathering tools(IGT) && MLS in selinux:
+
+IGT:The utilities below are the command-line tools that provide well-formatted info, such as access vector
+cache statistics.
+
+avcstat : avcstat - Display SELinux AVC statistics.
+
+-f     Specifies the location of the AVC statistics file, defaulting to /sys/fs/selinux/avc/cache_stats.
+-c     Display the cumulative values.
+
+seinfo : seinfo allows the user to query the components of a SELinux policy.
+
+sesearch : sesearch allows the user to search the rules in a SELinux policy.
+
+MLS(Multi Level Security):
+
+The MLS technology refers to a security scheme that enforces the bell la padula mandatory access model.
+
+Under MLS, users and processes called sujects, and file, devices and others passsive components
+of the system are called objects.
+
+Both sujects and objects are laballed with a security level, which entails a subject's clearance or an 
+object's classification.  
+
+Each security level is composed a sensitivity and a category, for example, an internal release schedule is filed under
+the internal documents category with a confidential sensitivity.
+
+
+
+
+--------------------------------------------------------------------------------------------------
+
+
+If the system has been running in disabled mode, newly created file system objects will to labeled with a security context.
+
+To set the file systems to be relabled on rebbot, do touch /.autorelabel and reboot.
+
+After you reboot the system having set up SElinux to run in permissive mode. you are going to get permissive error messages in the audit trail file. /var/log/audit/audit.log
+
+To get at the AVC messages, do ausearch -i -m AVC, USER_AVC -sv no
+
+
+Here's a list of things to look at when you are trying resolve an SElinux access problem -:
+
+Wrong Subject Context, Wrong Object Context, Right Subject and Object Context but no Acces, An Intrusion  Attempt.
+
+chcon -t type_name_t file or dir (to change the context of file dir temporarily).
+
+chcon -R -t type_name_t dir (to change the context of all files inside dir temporarily).
+
+semanage fcontext -a -t type-name_t name or dir (to change the context of file dir).
+
+semanage fcontext --add --type type-name_t name or dir (to change the context of file dir).
+
+semanage fcontext --delete --type type-name_t name or dir (to delete the context of file dir).
+
+restorecon file or dir-name (to restore context of file or directory).
+
+semanage fcontext --add --type type-name_t "/web(/.*)?" (to change context of all file of dir).
+
+semanage fcontext --delete --type type-name_t "/web(/.*)?" (to delete context of all file of dir).
+
+restorecon /dir-name/* (to restore context of file or dir)
+
+tail /etc/selinux/targeted/contexts/ (to see the context policy of dir and file).
+
+
+Get a listing of all the booleans -:
+
+getsebool -a 
+
+getsebool booleanname (to check boolean status).
+
+semanage boolean -l 
+semanage boolean --list
+
+Below is the format in which booleans will be listed:
+
+SELinux-boolean:State:Default:Description
+
+setsebool name_of_boolean on  ( to OFF boolean temporarily).
+
+setsebool name_of_boolean off  ( to OFF boolean temporarily).
+
+setsebool -P name_of_boolean on  ( to ON boolean permanently ).
+
+setsebool -P name_of_boolean off  ( to ON boolean permanently ).
+
+
+Managing ports in SELinux:
+
+
+semanage port --list (to list SELinux ports)
+
+SELinux-Port-Type:Proto:Port-Number
+
+semanage port --list|grep example_port_t (to grep a particular port).
+semanage port -a -t http_port_t -p tcp 8080 ( allowing port).
+semanage port --add --type http_port_t --proto tcp 8080
+semanage port --delete --type http_port_t --proto tcp 8080 (deleting port).
+
+
+audit2allow < /var/log/audit/audit.log (to generate a new policy).
+
+Example to create module -:
+
+ausearch -i -m AVC -sv no -ts recent | audit2allow
+
+ausearch -i -m AVC -sv no -ts recent |grep prelude_manager|audit2allow
+
+ausearch -i -m AVC -sv no -ts recent -se prelude_manager_t | audit2allow
+
+ausearch -i -m AVC -sv no -ts recent -se nrpe_t | audit2allow -m md-nrpe > md-nrpe.te  
+
+checkmodule -M -m -o md-nrpe.mod md-nrpe.te
+
+semodule_package -o md-nrpe.pp -m md-nrpe.mod
+
+semodule -install md-nrpe.pp
+
+
+
+SElinux allows admin to change a single process to permissive:
+
+semanage permissive -a context_t (to allow a mentioned context).
+semanage permissive --add context_t
+
+semanage permissive -d context_t (to deny a mentioned context).
+semanage permissive --delete context_t
+
+semanage permissive -l (to list all permissive domain(context) ).
+semanage permissive --list 
+
+
+semanage module -l (to list modules).
+semanage module --list
+
+Module-Name:Priority:Language
+
+
+semanage fcontext -l (to list filecontext).
+semanage fcontext --list
+
+SELinux-fcontext:type:Context
+
+
+semanage port -l
+semanage port --list
+
+SELinux-Port-Type:Proto:Port-Number
+
+semanage login -l
+semanage login --list
+
+Login-Name:SELinux-User:MLS/MCS-Range:Service
+
+
+semanage user -l
+semanage user --list
+
+            :Labeling:MLS/     :MLS/                          
+SELinux User:Prefix  :MCS Level:MCS Range:SELinux Roles
+
+
+semanage node -l
+semanage node --list
+
+
+import Import local customizations
+
+export Output local customizations
+
+login Manage login mappings between linux users and SELinux confined users
+
+user Manage SELinux confined users (Roles and levels for an SELinux user)
+
+port Manage network port type definitions
+
+interface Manage network interface type definitions
+
+module Manage SELinux policy modules
+
+node Manage network node type definitions
+
+fcontext Manage file context mapping definitions
+
+boolean Manage booleans to selectively enable functionality
+
+permissive Manage process type enforcement mode
+
+dontaudit Disable/Enable dontaudit rules in policy
+
+ibpkey Manage infiniband pkey type definitions
+
+ibendport Manage infiniband end port type definitions
+
+
+
+
+Port:
+
+-a           -d           --deleteall  -l           -m           --noheading  --proto      -S           
+--add        -D           -h           --list       --modify     -o           -r           -t           
+-C           --delete     --help       --locallist  -n           -p           --range      --type 
+
+Boolean:
+
+-0           -h           -l           -n           -o           --on         
+-1           --help       --list       --noheading  -off         -S 
+
+
+
+ll -Z filename to see SELinux context.
+
+ll -dZ dirname to see SELinux context.
+
+id to see the context of user.
+
+ps -efZ pid to display SELinux context of process.
+
+setenforce 0 (to make SELinux permissive until system reboot)
+
+setenforce 1 (to make SELinux enforcing until system reboot).
+
+getenforce (to view SELinux status).
+
+sestatus (to view SELinux status in detail).
+
+
+
+
+
+
+

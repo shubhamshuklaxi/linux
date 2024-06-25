@@ -1,0 +1,43 @@
+
+1.  /       (/ is called root directory).
+
+2.  /bin    (/bin directory has binary files of program which helps to execute commands).
+
+3.  /dev    (/dev directory has device(hardware related files) files.
+
+4.  /home   (/home directory has normal user's home directory).
+
+5.  /lib64  (/lib64 has supported library files for 64 bit system).
+
+6.  /mnt    (/mnt is an empty directory which can we use to mount devices).
+
+7.  /proc   (/proc has processes related files which are directly updated from kernel).
+
+8.  /run    ( removable devices are directly mounted on /run).
+
+9.  /srv    (/srv is serving directory which use to temporarily hold data).
+
+10. /tmp    (/tmp is use to keep temporary files, all files will be automatically removed after booting).
+
+11. /var    (/var is use to containing logs related files).
+
+12. /boot   (/boot has all booting files of kenrel).
+
+13. /etc    (/etc has all configuration setting related files).
+
+14. /lib    (/lib has supported library files for 32 bit system).
+
+15. /media  ( removable devices are directly mounted on /media ).
+
+16. /root   (/root is the home directory of root user).
+
+17. /sbin   (/sbin directory has system binary files of program which helps to execute root user's commands).
+
+18. /sys    (/sys has kernel, firmware, hypervisor related files).
+
+19. /usr    (/usr has sbin -> usr/sbin, lib64 -> usr/lib64, lib -> usr/lib, bin -> usr/bin).
+
+
+
+
+ 

@@ -1,0 +1,78 @@
+-----------Stratis--------
+
+Definition: stratis is one of the new features that ships with RHEL8 distribution,
+
+Stratis is a local storage management solution provide:
+
+1. Thin provisioning.
+
+2. File system snapshot.
+
+3. Pool-based management.
+
+4. Monitoring.
+
+Basically, Stratis is a storage pool that is created from one or more local disks or disk partitions.
+
+Stratis provides two software utilities:
+
+Stratis-cli: this is the command-line tool that ships with stratis.
+
+stratis deamon: this is a deamon that creates and manages disks and plays a role in providing a DBUS API.
+
+Steps to to create stratis:
+
+1. dnf install stratisd stratis-cli* (installinf startis-cli utility).
+
+2. rpm -qi stratisd stratis-cli (checking the installing stratis-cli utility).
+
+3. systemctl enable --now stratisd (enabling stratisd deamon).
+
+4. systemctl start stratisd ( starting stratisd deamon).
+
+5. systemctl status stratisd ( checking status whether startisd deamon service is running or not).
+
+6. blkid /dev/blockdevicename (to check whether Disk is cleaned or not).
+
+7. wipefs -a /dev/blockdevicename (to wipe out disk).
+
+8. stratis pool create pool-name /dev/block-device-name (creating stratis-pool using disk or disk partitions).
+
+9. stratis pool list (to display the stratis pool).
+
+10. stratis fs create poolname fsname ( to create FS using stratis pool).
+
+11. stratis fs list (to Display stratis FS).
+
+12. mount /dev/stratis/stratis-pool-name/stratis-fs-name dir/ (mounting stratis FS).
+
+
+Steps to extend pool:
+
+1. umount /dev/stratis/stratis-pool-name/stratis-fs-name (unmounting stratis FS).
+
+2. stratis pool add-data poolname /dev/disk-name (adding additional disk in stratis pool).
+
+--- stratis fs destroy pool-name fs-name (to destroy fs from pool).
+
+--- stratis pool destroy pool-name (to destroy stratis pool).
+
+--- stratis fs rename pool-name oldfs-name newfs-name (to rename stratis fs)
+
+--- stratis pool rename oldpool-name newpool-name (to rename pool
+
+Steps to take snapshot of startis FS:
+
+1. stratis fs snapshot pool-name fs-name snapname (taking snap of stratis FS).
+
+how to revert the corrupted FS with help of snap:
+
+1. umount /dev/stratis/stratis-pool-name/stratis-fs-name (unmounting stratis FS).
+
+2. stratis fs destroy pool-name fs-name (destroying stratis FS from stratis pool).
+
+3. stratis fs snapshot pool-name snapname destroyed-FS-name (reverting fs using snap).
+
+4. mount /dev/stratis/stratis-pool-name/stratis-fs-name (mounting stratis FS).
+
+Done.

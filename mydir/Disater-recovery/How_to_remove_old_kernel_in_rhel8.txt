@@ -1,0 +1,12 @@
+Steps To remove old kernel:
+
+
+1. uname -r (to check the currently used kernel)
+
+2. cd /boot/
+
+3. rpm -q kernel (check the available kernels in system).
+
+4. rpm -e kernel-name (removing kernel).
+
+5. remove the vmlinuz and initramfs file of the kernel.

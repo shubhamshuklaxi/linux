@@ -1,0 +1,39 @@
+Steps to enable Tuning:
+
+1. yum install tuned* -y 
+
+2. systemctl start tuned.service
+
+3. systemctl enable tuned.service
+
+4. /etc/tuned/  ( This directory has configuration files for tuning ).
+
+5. /usr/lib/tuned/ ( Profile tuning files ).
+
+6. tuned-adm active ( to Dispaly Current active profile ).
+
+7. tuned-adm list ( to list Available profiles ).
+
+Available profiles:
+- accelerator-performance     - Throughput performance based tuning with disabled higher latency STOP states
+- balanced                    - General non-specialized tuned profile
+- desktop                     - Optimize for the desktop use-case
+- hpc-compute                 - Optimize for HPC compute workloads
+- intel-sst                   - Configure for Intel Speed Select Base Frequency
+- latency-performance         - Optimize for deterministic performance at the cost of increased power consumption
+- network-latency             - Optimize for deterministic performance at the cost of increased power consumption, focused on low latency network performance
+- network-throughput          - Optimize for streaming network throughput, generally only necessary on older CPUs or 40G+ networks
+- optimize-serial-console     - Optimize for serial console use.
+- powersave                   - Optimize for low power consumption
+- throughput-performance      - Broadly applicable tuning that provides excellent performance across a variety of common server workloads
+- virtual-guest               - Optimize for running inside a virtual guest
+- virtual-host                - Optimize for running KVM guests
+
+8. tuned-adm profile profile-name ( to change active profile ).
+
+9. tuned-adm recommend ( to list best profile for system ).
+
+10. tuned-adm off ( to off active profile ).
+
+
+

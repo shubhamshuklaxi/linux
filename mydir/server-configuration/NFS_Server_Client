@@ -1,0 +1,94 @@
+Steps to configure NFS(Network file system). Server and client.
+
+At server end:
+
+1. yum install nfs* -y
+
+2. yum install rpcbind* -y 
+
+3. systemctl start nfs-server.service
+
+4. systemctl enable nfs-server.service
+
+5. systemctl status nfs-server.service
+
+6. systemctl start rpcbind.service
+
+7. systemctl enable rpcbind.service
+
+8. systemctl status rpcbind.service
+
+9. firewall-cmd --permanent --add-service=nfs
+
+10. firewall-cmd --permanent --add-service=mountd
+
+11. firewall-cmd --permanent --add-service=rpc-bind
+
+12. firewall-cmd --reload
+
+13. systemctl restart nfs-server.service
+
+14. systemctl restart rpcbind.service
+
+15. mkdir /dir (creating a mount point)
+
+--. chown nobody:nobody /dir (changing owner of the dir).
+
+16. mount /dev/block-device-name /dir (mounting a disk on mountpoint)
+
+17. vim /etc/exports 
+
+Enter the mount point and client ip addr in below format:
+
+/server-mount-point-dir-name client-ip-address(rw,sync,no_all_squash,root_squash)
+
+#no_all_squash means (map client users).
+
+#root_squash means disable root user to perform any action.
+
+save the file.
+
+18. exportfs -arv 
+
+19. chmod 777 /dir (giving full perm to the mount-point-dir)
+
+
+At client end:
+
+
+1. yum install nfs* -y
+
+2. yum install rpcbind* -y
+
+3. showmount -e server-ip-address (checking whether the server is exported or not)
+
+4. mkdir mountpoint-dir-name (creating a mount-point-dir)
+
+5. vim /etc/fstab
+
+Enter the mount point and serverip in below format:
+
+server-ip-address:/server-mount-point-dir-name /mount-point-dir-name nfs defaults 0 0
+
+save the file.
+
+6. mount -t nfs server-ip:/server-mountpoint-dir-name /mount-point-dir-name (mounting nfs-server-dir at mount-point-dir).
+
+done.
+
+
+Error Management 
+
+RPC: Unkown host
+
+solution: remove /prefix from ip.
+
+RPC: unable to receive
+
+solultion: mention correct ip.
+
+RPC: program not registered 
+
+solution: restart nfs-server.service
+
+rpcinfo -p|grep nfs 

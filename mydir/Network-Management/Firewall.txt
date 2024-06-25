@@ -1,0 +1,277 @@
+Firewall:
+
+in computing, a firewall is a network security system that monitors and controls incoming and outgoing network traffic based on predetermined security rules.
+
+A firewall typically establishes a barrier between a trusted network and an untrusted network, such as internet.
+
+Types of firewalls
+
+Software Firewall:
+
+Such type of firewall is either OS built-in or can be enabled by installing software in the computers e.g. antivirus softwares, total protection softwares, internet security softwares etc.
+
+A software firewall is installed on an individual computer and it protects that single device. if multiple computers need protection, that software must be installed on each device.
+
+
+Hardware Firewall:
+
+A hardware firewall is a physical device similar to a server that filters traffic to a computer, instead of plugging the network cable into the server, it is connected to the firewall, positioning the firewall between the uplink and the computers.
+
+Hardware firewall allows you to protect your entire network from the outside world with a single physical device, this device is installed between your computer network and the internet, A hardware firewall monitors packets of data as they are transmitted.
+
+
+
+Working of Firewall:
+
+Firewall is used to control incomming and outgoing traffic in any device or network.
+
+Firewall decides which traffic can come in machine & which can go out.
+
+Firewall can be found at every level in any network E.g. Computers, Routers, Servers & other Networking devices.
+
+Firewall can also forward packets to the next machine which are comming from other machines, if your machine is working as router.
+
+Both types of traffic incomming as well as outgoing can be controlled with firewall.
+
+Generally no restrictions are there on the outgoing traffic from your machine, by deafult firewall doesn't block all outgoing traffic, we manage outgoing traffic with the help of proxy server in network.
+
+
+Firewall controls or restricts all incoming traffic except the traffic that is coming in response of any request, by default on the client it doesn't allow any unattended traffic to come in, it drops such tarffic.
+
+
+
+Managing firewall in Linux(RHEL):
+
+A. RHEL6
+
+1. IPTABLES is the default utility to manage and monitor firewall configuration as well as its components.
+
+2. Only IPTABLES command is used to manage firewall.
+
+3. Packets filtering is possible through IPTABLES only.
+
+4. Netfilter is the kernel module used for packet filtering.
+
+5. GUI packages used to manage firewall in system-config-firewall.
+
+6. /etc/sysconfig/iptables is the default configuration file used to manage rules & setting in the firewall.
+
+7. IPTABLES is responsible at backend for managing the IPTABLES services to filter the packets.
+
+8. if service ipatbles status command is used to check the firewall status.
+ 
+
+B. RHEL7 
+
+
+1. firewalld is the deafult service is used to manage and monitor firewall as well as its components but IPTABLES can also be used.
+
+2. firewall-cmd is the deafult service is used to manage firewall, but IPTABLES can also be used.
+
+3. To use IPTABLES first remove firewalld packages, then install IPTABLES.
+
+4. Netfilter is the kernel module used for packet filtering.
+
+5. GUI packages used to manage firewall in firewall-config.
+
+6. /usr/lib/firewalld/services an XML file as well as /etc/firewalld/services configuration files are used.
+
+7. IPTABLES is responsible at backend for managing the firewalld daemon services to filter the packets.
+
+8. systemctl status command is used to check firewall status.
+
+
+C. RHEL8
+
+1. Only firewalld is the default service used to manage and monitor firewall as well as its components.
+
+2. Only firewall-cmd command is used to manage firewall.
+
+3. Only firewall-cmd can be used, no support for IPTABLES.
+
+4. Netfilter is the kernel module used for packet filtering.
+
+5. GUI packages used to manage firewall in firewall-config.
+
+6. /usr/lib/firewalld/services an XML file as well as /etc/firewalld/services configuration files are used.
+
+7. NFTABLES is responsible at backend for managing the firewalld daemon services to filter the packets.
+
+8. systemctl status command is used to check firewall status.
+
+
+
+Firewall Zones in Linux:
+
+The predefined zones are stored in /usr/lib/firewalld/zones/ Direcotory and can be instantly applied to available network interface. These files are copied to /etc/firewalld/zones/ directory only after they modified. the default detting of the predetermind zones are as follows:
+
+Block: Any incoming network connection are rejected with an icmp-host-prohibited message for ipv4 and for ipv6 adm-prohibited ipv6. only network connections initiated from within are possible.
+
+Dmz:
+
+For computers in your demilitarized zone that are publicly accessible with limited access to your internal network. only selected incoming connenctions are accepted.
+
+Drop:
+
+Any incoming network packets will be droped without any notifications, only outgoing connections are possible.
+
+External:
+
+it generally used at masquerading enabled routers, so that traffic of one machine doesn't harm others network.
+
+Home:
+
+For use at home when you mostly trust the other computers, only selected incomming connections are accepted.
+
+internal:
+
+For use on internal networks, when you mostly trust the other computers, only selected incomming connections are accepted.
+
+Public:
+
+For use at public area where you mostly don't trust the other computers, only selected incomming connections are accepted.
+
+Trusted:
+
+All network connections are accepted.
+
+Work:
+
+For use at work when you mostly trust the other computers, only selected incomming connections are accepted.
+
+
+Ports Information in firewall:
+
+Size of one port = 16 bits each bit may have the value as 0 ot 1, so in total only 2 values are possibles for each bit i.e 2.
+
+Total size of bits can be 2^16=65536.
+
+Ports ranging from 0 to 1023 are called well known ports are reserved fro important services like:
+
+FTP = 20, 21
+
+SSH = 22
+
+TELNET = 23
+
+SMTP = 25
+
+DNS = 53
+
+DHCP = 67, 68
+
+HTTP = 80
+
+HTTPS = 443
+
+Ports ranging from 1024 to 65536 are called unreserved ports.
+
+Steps to install firewalld:
+
+1. yum install firewall* -y
+
+2. systemctl start firewalld.service 
+
+3. systemctl enable firewalld.service 
+
+4. systemctl status firewalld.service 
+
+
+-- firewall-cmd --get-default-zone (to list the current zone).
+
+5. yum install firewall-config -y ( to install GUI firewall).
+
+
+-- firewall-cmd --list-all (to list the entire firewall configuration).
+
+-- firewall-cmd --get-services (known services in firewall).
+
+-- firewall-cmd --zone=zonename --add-service=services --permanent (to add service in firewall).
+
+-- firewall-cmd --reload (to reload firewall).
+
+-- firewall-cmd --zone=zonename --remove-service=services --permanent (to remove service in firewall).
+
+-- firewall-cmd --reload (to reload firewall).
+
+
+-- firewall-cmd --zone=zonename --add-port=ports/tcp or /udp --permanent (to add ports in firewall).
+
+-- firewall-cmd --reload (to reload firewall).
+
+-- firewall-cmd --zone=zonename --remove-port=ports/tcp or /udp --permanent (to remove ports in firewall).
+
+-- firewall-cmd --reload (to reload firewall).
+
+-- firewall-cmd --zone=zonename --list-services (list the services of a particular domain).
+
+-- firewall-cmd --zone=zonename --list-ports (list the ports of a particular domain).
+
+-- firewall-cmd --get-zones (to list available zones in firewall).
+
+-- firewall-cmd --zone=home --change-interface=enp0s17 (to change the zones of interfaces).
+
+-- firewall-cmd --get-active-zones (to list active zones with its interfaces).
+
+-- /usr/lib/firewalld/ (this dir has script files of firewall, through these script file system knows whice services are using the follwing ports).
+
+-- /etc/firewalld/ (firewall is managed through this directory).
+
+-- ip link show ( to list interfaces).
+
+-- firewall-cmd --list-services (to list services of firewall).
+
+-- firewall-cmd --list-ports (to list ports of firewall).
+
+-- firewall-cmd --zone=public --add-forward-port=port=80:proto=tcp:toport=8080 --permanent (to add forward ports).
+
+-- firewall-cmd --reload 
+
+-- firewall-cmd --list-forward-ports (to list forwarded ports).
+
+
+-- firewall-cmd --zone=public --remove-forward-port=port=80:proto=tcp:toport=8080 --permanent (to remove forward ports).
+
+-- firewall-cmd --reload
+
+-- firewall-cmd --list-forward-ports (to list forwarded ports).
+
+-- firewall-cmd --zone=public --add-masquerade
+
+-- firewall-cmd --zone=public --add-forward-port=port=80:proto=tcp:toport=8080:toaddr=192.168.96.12 --permanent  (masqurading to ip).
+
+-- firewall-cmd --reload 
+
+-- firewall-cmd --list-forward-ports (to list forward ports).
+
+
+-- firewall-cmd --zone=public --add-forward-port=port=80:proto=tcp:toport=8080:toaddr=192.168.96.12 --permanent  (removing masquerading to ip).
+
+-- firewall-cmd --reload
+
+-- firewall-cmd --list-forward-ports (to list forward ports).
+
+-- firewall-cmd --zone=public --remove-masquerade.
+
+-- firewall-cmd --permanent --zone=public --add-rich-rule 'rule family="ipv4" source address="192.168.96.12" port port=22 protocol=tcp accept' ( adding rich rules).
+
+-- firewall-cmd --reload
+
+-- firewall-cmd --list-rich-rules ( to list rich rules).
+
+
+-- firewall-cmd --permanent --zone=public --remove-rich-rule 'rule family="ipv4" source address="192.168.96.12" port port=22 protocol=tcp accept' ( remove rich rules).
+
+-- firewall-cmd --reload
+
+-- firewall-cmd --list-rich-rules ( to list rich rules).
+
+-- firewall-cmd --permanent --new-zone=shubham (to create new zone in firewall).
+
+
+-- firewall-cmd --reload
+
+
+
+
+

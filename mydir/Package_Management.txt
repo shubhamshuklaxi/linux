@@ -1,0 +1,119 @@
+Package_Management commands:
+
+cat /etc/redhat-release (to get the release version).
+
+
+#.deb=debian
+
+dbkg, aptitude, apt-get (commands manage packages in debian based OS).
+
+#.rpm=Redhat Package Manager
+
+#rpm,yum,dnf (commands to manage packages in fedora based OS)
+
+
+Repository -: collections of software packages and documents either locally or globally).
+
+
+Dependencies -: supporting files for a software applications.
+
+Redhat package managemnet commands -:
+
+RPM(Redhat Package Manage) -:
+
+rpm -qa|grep package-prefix (list the available packages with packages-prefix "-q query -a all" ). 
+ 
+rpm -q exact-package-name (list the package if it's available).
+
+rpm -qa|wc -l (list the number of packages installed in system "-i installed" ).
+
+rpm -qi exact-package-name (list the details of package).
+
+cd /run/media/root/CentOS-8-4-2105-x86_64-dvd/BaseOS/Packages/ (to see the local available packages).
+
+rpm -ivh exact-package-name (to install rpm packages in rhel8 "-i install, -v verbose, h, hashing").
+
+rpm -evh exact-package-name (to earse rpm packages in rhel8 "-e erase, -v verbose, h, hashing").
+
+rpm -Uvh exact-package-name (to earse rpm packages in rhel8 "-U upgrade, -v verbose, h, hashing").
+
+/var/lib/rpm (it keep tracks of all files which enable complete removal of software).
+
+rpm2cpio pkg.rpm>pkg.cpio (to make enrty of pkg.rpm to cpio archival).
+
+rpm2cpio pkg.rpm | cpio -t (tp list all files in the pkg.rpm).
+
+We can't resolve dependencies using rpm, so use dnf or yum:
+
+yum list (to list the packages available in the repo).
+
+yum list all (to list the packages available in the repo).
+
+dnf list (to list the packages available in the repo).
+
+dnf list all (to list the packages available in the repo).
+
+yum search package-prefix (to list matching pachages matching with the prefix)
+
+dnf search package-prefix (to list matching pachages matching with the prefix)
+
+yum provides file-or-dir-name ( to list repo of the file or dir).
+
+yum list installed (list the installed packages).
+
+dnf list installed (list the installed packages).
+
+yum install pkg-name (to install the package).
+
+yum remove pkg-name (to remove the package).
+
+yum reinstall pkg-name (to reinstall the package).
+
+dnf install pkg-name (to install the package).
+
+dnf remove pkg-name (to remove the package).
+
+dnf reinstall pkg-name (to reinstall the package).
+
+yum update pkg-name (to patch machine).
+
+dnf update pkg-name (to patch machine).
+
+yum grouplist (to list all package related groups).
+
+dnf grouplist (to list all package related groups).
+
+yum groupinstall "group-name" (to install all the packages of group)
+
+dnf groupinstall "group-name" (to install all the packages of group)
+
+yum groupremove "group-name" (to remove all the packages of group)
+
+dnf groupremove "group-name" (to remove all the packages of group)
+
+
+/etc/yum.repos.d/ (this yum.repos.d dir contains all the .repo files).
+
+
+/etc/yum.conf (this yum.conf contains setting related details of .repo files).
+
+
+Installing software through it's source code:
+
+ 1098  22/02/22 22:11:41 yum grouplist 
+ 1099  22/02/22 22:12:01 yum groupinstall "Development Tools"
+ 1100  22/02/22 22:12:51 yum install -y gcc
+ 1101  22/02/22 22:14:35 wget https://the.earth.li/~sgtatham/putty/latest/putty-0.76.tar.gz
+ 1102  22/02/22 22:16:00 cp putty-0.76.tar.gz test/
+ 1103  22/02/22 22:16:03 cd test
+ 1104  22/02/22 22:16:04 ll
+ 1105  22/02/22 22:16:16 tar -xvf putty-0.76.tar.gz 
+ 1106  22/02/22 22:16:19 ll
+ 1107  22/02/22 22:16:31 cd putty-0.76/
+ 1108  22/02/22 22:16:32 ll
+ 1109  22/02/22 22:17:01 ./configure 
+ 1110  22/02/22 22:17:20 make
+ 1111  22/02/22 22:18:53 make install
+ 
+
+

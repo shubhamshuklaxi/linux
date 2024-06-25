@@ -1,0 +1,64 @@
+---how to configure ftp vsftpd server---:
+
+1. yum install ftp vsftpd -y (installing ftp packages).
+
+2. systemctl start vsftpd.service
+
+3. systemctl enable vsftpd.service
+
+4. systemctl status vsftpd.service
+
+5. firewall-cmd --permanent --add-service=ftp
+
+6. firewall-cmd --reload
+
+7. systemctl restart vsftpd.service
+
+done now you can login using username and password.
+
+Below are the commands to work with ftp:
+
+
+!		debug		mdir		sendport	site
+$		dir		mget		put		size
+account		disconnect	mkdir		pwd		status
+append		exit		mls		quit		struct
+ascii		form		mode		quote		system
+bell		get		modtime		recv		sunique
+binary		glob		mput		reget		tenex
+bye		hash		newer		rstatus		tick
+case		help		nmap		rhelp		trace
+cd		idle		nlist		rename		type
+cdup		image		ntrans		reset		user
+chmod		lcd		open		restart		umask
+close		ls		prompt		rmdir		verbose
+cr		macdef		passive		runique		?
+delete	
+
+mget to get download multiple file.
+
+open /etc/vsftpd/vsftpd.conf
+
+# Allow anonymous FTP? (Beware - allowed by default if you comment this out,YES to allow NO to deny).
+anonymous_enable=NO
+#
+# Uncomment this to allow local users to log in.(YES to allow NO to deny).
+local_enable=YES
+#
+# Uncomment this to enable any form of FTP write command.
+write_enable=YES
+
+userlist_enable=YES (YES to enable user login using user_list NO to deny).
+/etc/vsftpd/user_list file disable all users who r in the list even it won't prompt for password.
+/etc/vsftpd/ftpusers file disable all users who r in the list.
+
+listen_port=port-number (to add custom port).
+
+anon_root=/public_dir (to make dir access to anonymous user).
+
+
+done.
+
+chcon -t public_content_t /U (to make public access).
+
+Thank you!

@@ -1,0 +1,3 @@
+How to create Virtual hard disk:
+
+dd if=/dev/zero(source) of=filename(path with filename) bs=blocksize count= no of count (creating block device using /dev/zero file). 

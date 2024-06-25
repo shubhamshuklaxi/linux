@@ -1,0 +1,22 @@
+
+1. cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd1.conf (copying config file of httpd server).
+
+2. cp -pr /etc/httpd/conf.d /etc/httpd/conf.d1 (coping directory conf.d with recursively as well preserving perms ).
+
+3. cd /run/httpd/ 
+
+4. mv httpd.pid httpd.pid1 (renaming PID file of httpd server ).
+
+4. vim /etc/httpd/conf/httpd1.conf (open config file of second httpd server):
+
+IncludeOptional conf.d1/*.conf
+Listen port
+
+:wq
+
+5. httpd -f /etc/httpd/conf/httpd1.conf -k start (to start httpd server).
+
+6. httpd -f /etc/httpd/conf/httpd1.conf -k stop (to stop httpd server).
+
+done.
+

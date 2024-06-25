@@ -1,0 +1,215 @@
+Security-Enhanced Linux.
+
+
+SElinux is an implementation of a mandatory access control mechanism in linux kernel, checking for allowed operations after standard discretionary access controls are checked. It was created by the National Security Agency and can enforce rules on files and processes in linux system, and on their actions, based on defined plolicies.
+
+SElinux is all about labeling, and it makes decision based on the label.
+
+SElinux has 4 forms of access control:
+
+1. Targeted Enforcement (TE).
+
+2. Strict -: Targeted Enforcement on steroid.
+
+3. Role-Based Access Control (RBAC) -: Defines Role for users.
+
+4. Multi-Level Security (MLS).
+
+
+SElinux is not:
+
+A replacement for passwords, firewalls, or other security systems.
+
+Antivirus software.
+
+An all-in-one security solution.
+
+
+The feilds in a security context are:
+
+user:role:type:level
+
+A sample security context:
+
+system_u:object_r:admin_home_t:s0
+
+
+SElinux has three modes of operation:
+
+
+Disabled -: SElinux enforcement entirely turned off and also the creation of proper labels on the files no longer takes place.
+
+Permissive -: The kernel will also continue to create properly labeled files, wath all system access checks, and report Access Violations in the form Access Vector Cache (AVC) messages but will allow the access.
+
+Enforcing -: This tells the system to run with SElinux labeling files with proper contexts, watching all system access checks, stopinf all "Denied" access, and logging all AVC violations.
+
+
+To see the current SElinux mode, do getinforce or setstatus.
+
+
+SElinux setting related info are stored in /etc/selinux/config file.
+
+
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+SELINUX=enforcing
+# SELINUXTYPE= can take one of these three values:
+#     targeted - Targeted processes are protected,
+#     minimum - Modification of targeted policy. Only selected processes are protected. 
+#     mls - Multi Level Security protection.
+SELINUXTYPE=targeted
+
+
+setenforce enforcing 
+
+setenforce permissive
+
+If the system has been running in disabled mode, newly created file system objects will to labeled with a security context.
+
+To set the file systems to be relabled on reboot, do touch /.autorelabel and reboot.
+
+After you reboot the system having set up SElinux to run in permissive mode. you are going to get permissive error messages in the audit trail file. /var/log/audit/audit.log
+
+To get at the AVC messages, do ausearch -i -m AVC, USER_AVC -sv no
+
+
+Here's a list of things to look at when you are trying resolve an SElinux access problem -:
+
+Wrong Subject Context, Wrong Object Context, Right Subject and Object Context but no Acces, An Intrusion  Attempt.
+
+chcon --type type_name_t file or dir (to change the context of file dir).
+
+semanage fcontext -a -t type-name_t name or dir (to change the context of file dir).
+
+restorecon file or dir name (to restore context of file or dir)
+
+Get a listing of all the booleans -:
+
+getsebool -a 
+
+semanage boolean -l 
+
+Below is the format in which booleans will be listed:
+
+SELinux-boolean:State:Default:Description
+
+setsebool name_of_boolean on  ( to OFF boolean temporarily).
+
+setsebool name_of_boolean off  ( to OFF boolean temporarily).
+
+setsebool -P name_of_boolean on  ( to ON boolean permanently ).
+
+setsebool -P name_of_boolean off  ( to ON boolean permanently ).
+
+
+semanage port -a -t http_port_t -p tcp 8080 ( allowing port).
+
+audit2allow < /var/log/audit/audit.log (to generate a new policy).
+
+Example to create module -:
+
+ausearch -i -m AVC -sv no -ts recent | audit2allow
+
+ausearch -i -m AVC -sv no -ts recent |grep prelude_manager|audit2allow
+
+ausearch -i -m AVC -sv no -ts recent -se prelude_manager_t | audit2allow
+
+ausearch -i -m AVC -sv no -ts recent -se nrpe_t | audit2allow -m md-nrpe > md-nrpe.te  
+
+checkmodule -M -m -o md-nrpe.mod md-nrpe.te
+
+semodule_package -o md-nrpe.pp -m md-nrpe.mod
+
+semodule -install md-nrpe.pp
+
+
+
+SElinux allows admin to change a single process to permissive:
+
+semanage permissive -a context_t (to allow a mentioned context).
+
+semanage permissive -d context_t (to deny a mentioned context).
+
+semanage permissive -l (to list all permissive domain(context) ).
+
+semanage module -l (to list modules).
+
+Module-Name:Priority:Language
+
+semanage fcontext -l (to list filecontext).
+
+SELinux-fcontext:type:Context
+
+semanage port -l
+
+SELinux-Port-Type:Proto:Port-Number
+
+semanage login -l
+
+Login-Name:SELinux-User:MLS/MCS-Range:Service
+
+semanage user -l
+
+            :Labeling:MLS/     :MLS/                          
+SELinux User:Prefix  :MCS Level:MCS Range:SELinux Roles
+
+
+semanage node -l
+
+import Import local customizations
+
+export Output local customizations
+
+login Manage login mappings between linux users and SELinux confined users
+
+user Manage SELinux confined users (Roles and levels for an SELinux user)
+
+port Manage network port type definitions
+
+interface Manage network interface type definitions
+
+module Manage SELinux policy modules
+
+node Manage network node type definitions
+
+fcontext Manage file context mapping definitions
+
+boolean Manage booleans to selectively enable functionality
+
+permissive Manage process type enforcement mode
+
+dontaudit Disable/Enable dontaudit rules in policy
+
+ibpkey Manage infiniband pkey type definitions
+
+ibendport Manage infiniband end port type definitions
+
+
+
+
+Port:
+
+-a           -d           --deleteall  -l           -m           --noheading  --proto      -S           
+--add        -D           -h           --list       --modify     -o           -r           -t           
+-C           --delete     --help       --locallist  -n           -p           --range      --type 
+
+Boolean:
+
+-0           -h           -l           -n           -o           --on         
+-1           --help       --list       --noheading  -off         -S 
+
+
+
+
+
+
+
+
+
+
+
+
+

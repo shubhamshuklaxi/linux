@@ -1,0 +1,32 @@
+1. yum install postfix* -y
+
+2. systemctl status postfix.service
+
+3. systemctl start postfix.service
+
+4. systemctl enable postfix.service
+
+5. systemctl status postfix.service
+
+mail username (to mail ).
+
+mailq (to list queued mail).
+
+postqueue -p
+
+postfix flush (flushed queued mail).
+
+postqueue -f
+
+cd /var/spool/mqueue/
+
+rm -rf (to delete mails).
+
+> /var/spool/mail/username (to clear mail box for user).
+
+postsuper -d ALL (to delete all mail).
+
+postsuper -d id (to deleted queued mail using id).
+
+
+

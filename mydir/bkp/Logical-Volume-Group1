@@ -1,0 +1,214 @@
+----------------creating logical volume-------------
+
+A. create pv(physical volume) using the blockdevice available in the system.
+
+pvcreate /dev/block-device-name to create physical volume.
+
+pvs or pvdisplay command to display about pv in details.
+
+B. create vg(volume group) using physical available in the system.
+
+---vgs or vgdisplay command to display about vg in details.
+
+---vgcreate vgname pvname.
+
+---vgrename oldvgname newvgname
+
+---vgchange -an vgname (to deactivate vg)
+
+---vgchange -ay vgname (to reactivate vg)
+
+---vgremove vgname (to remove vg).
+
+---vgextend vgname pvname.
+
+C. create lv(logical volume) using the volume group available in system.
+
+---lvremove /dev/vgname/lvname (to remove lv).
+
+1. lvs or lvdisplay command to display in details about lv.
+
+2 .lvcreate -L +size(in MB or GB) -n logical-volume-name volume-group-name
+
+---lvcreate -L size(in MB or GB) -n logical-volume-name volume-group-name
+
+---lvcreate -l number of extents(1 extents is = 4MB) -n logical-volume-name volume-group-name
+
+3. mkfs.filesystemtype /dev/vgname/lvname 
+
+4 .lvscan command to check whether lv is active or not
+
+---lvchange -an /dev/vgname/lvname to disable lv.
+
+---lvchange -ay /dev/vgname/lvname to enable lv.
+
+---Always enable enable and disable lv after unmounting the dir.
+
+5. mount /dev/vgname/lvname /dir (mounting the lv on the directory).
+
+Below are the steps to extend lvm.
+
+1. lvextend -L +size(in mb or gb) /dev/vgname/lvname  (to extend lvm).
+
+---lvextend -L total size(in mb or gb) /dev/vgname/lvname  (to extend lvm).
+
+---lvextend -L +size or total-size /dev/vgname/lvname -r (extend without using resize2fs).
+
+2. resize2fs /dev/centosvg/centoslv (to resize lvm)
+
+Below are the steps to reducing lv:
+
+1. umount /dir (always unmount the lv from the mount point before reducing lv).
+
+2. fsck -f /dev/vgname/lvname (to check whether the lv is corrupted or not).
+
+3. resize2fs /dev/vgname/lvname size (to reduce the lv).
+
+4. lvreduce -L size /dev/vgname/lvname (to reduce the lv)
+
+5. resize2fs /dev/vgname/lvname size (to reduce the lv).
+
+6. fsck -f /dev/vgname/lvname (to check whether the lv is corrupted or not).
+
+7. mount /dev/vgname/lvname /dir (mounting the lv in the directory).
+
+Extending the xfs file system:
+
+1. lvcreate -L +size or total size -n lvname vgname. (creating logical volume).
+
+2. mkfs.xfs /dev/vgname/lvname (formating file system to xfs).
+
+3. mount /dev/vgname/lvname /dir (mounting the lv on the directory).
+
+4. lvextend -L +size or total-size /dev/vgname/lvname (extending lv).
+
+---lvextend -L +size or total-size /dev/vgname/lvname -r (extending without xfs_grows)
+
+5. xfs_growfs /dev/vgname/lvname (resizing xfs lv).
+
+Creating lvm snapshot:
+
+1. lvcreate -L +size -s -n snapshot-name /dev/vgname/lvname (creating lv snapshot).
+
+Recovery lost data from lvm using lv snapshot:
+
+1. umount /dir (unmounting the directory).
+
+2. lvconvert --merge /dev/vgname/lvsnapname (restoring lv lost data using lv snap)
+
+3. lvchange -an /dev/vgname/lvname (disabling lv).
+
+4. lvchange -ay /dev/vgname/lvname (enabling lv).
+
+5. mount /dev/vgname/lvname /dir (mounting lv on directory).
+
+-- etc/lvm/lvm.conf this file contains threshold info of lvsnap.
+
+Restoring the deleted (only unmounted lv can be deleted) lv using file in /etc/lvm/archive/:
+
+1. cd /etc/lvm/archive/ (going to archive directory)
+
+2. ll -rth (to list the contents in reverse order).
+
+3. vgcfgrestore vgname --test -f file-name (to test vg).
+
+4. vgcfgrestore vgname -f file-name (restoring the deleted lv).
+
+5. lvchange -an /dev/vgname/lvname (disabling lv).
+
+6. lvchange -ay /dev/vgname/lvname (enabling lv).
+
+7. mount /dev/vgname/lvname /dir (mounting lv).
+
+Merging volume group:
+
+1. unmount /dev/vgname/lvname /dir (unmounting lv from dir).
+
+2. vgchange -an vgname (deactivating vg that will be merged).
+
+3. vgmerge mergervgname mergingvgname (merging the mergingvg into mergervg).
+
+4. vgchange -an vgname (deactivating vg).
+
+5. vgchange -ay vgname (activating vg).
+
+6. mount /dev/vgname/lvname /dir (mounting lv).
+
+Spliting volume group:
+
+1. unmount /dev/vgname/lvname /dir (unmounting lv from dir).
+
+2. vgchange -an vgname (deactiving the vg that we will split).
+
+3. vgsplit parentvg childvg pvname (spliting child from parent vg).
+
+4. vgchange -an vgname (deactivating vg).
+
+5. vgchange -ay vgname (activating vg).
+
+6. mount /dev/vgname/lvname /dir (mounting lv).
+
+Migrating lv,vg and pv from one disk to another:
+
+1. pvcreate /dev/block-device-name (target pv where we will move vg with lvm ).
+
+2. pvextend vgname targetpvname or path.
+
+---dmsetup deps /dev/vgname/lvname (checking the dependency).
+
+4. pvmove -n lvname lv's pv new-pv (moving lvm to new pv).
+
+--md5sum file to check the check sum value.
+
+Setup thin provisioning volumes in LV:
+
+---vgcreate -s 32M vgname pvname (setting the physical extents size of vg).
+
+1. lvcreate -L +size or total-size --thinpool lvname vgname (creatingv lv with thin provisioning option).
+
+2. lvcreate -V size --thin -n lvname vgname/thinlvname or /dev/vgname/thinlvname (creating pool in thin prov lv).
+
+Setup striping in LVM:
+
+
+1. lvcreate -L size -n lvname -i(to define striping number) -I(striping number) vgname.
+
+Files and directories of LVM:
+
+1. /etc/lvm
+
+--archive
+--backup
+--cache
+--lvm.conf
+--lvmlocal.conf
+--profile
+
+2. /var/lock/lvm (meta data corruption preventing file).
+
+
+commands:
+
+1. lvmdump -d /targetdir to dump lvm.
+
+2. pvs -v to display uuid.
+
+3. pvs -a to scan disk.
+
+4. pvs --segment to display disk segments.
+
+5. pvscan to scan pv.
+
+6. pvck pvpath to check pv.
+
+7. 
+attributes.
+
+1. a allocatable.
+
+2. o mounted.
+
+3. 
+
+
+ 

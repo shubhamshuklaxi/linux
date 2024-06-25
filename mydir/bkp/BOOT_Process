@@ -1,0 +1,64 @@
+Linux working structure:
+
+1. Shell:  where user write commands.
+
+2. kernel: it works interpreters between shell and hardware.
+
+3. Hardware.
+
+Linux booting process:
+
+
+1. POST: Power On self test: it test itself.
+
+2. BIOS: basic input output system:it's a chip in form of hardware it has inbuilt program it makes decision on what will be booting disk.
+
+---BIOS is a combination of both hardware as well as software.
+
+---BIOS provides us option to choose a boot device.
+
+---Then it gives the control to MBR.
+
+3. Master boot record : it's 512 bytes space inside memory which resides inside the first sector of primary Disk and it knows abou partition location in Disk as well as it knows location of OS and how to use it.
+
+---MBR searches boot loader.
+
+---It uses initramFS(it's a type of ram which has GRUB(grand unified boot loader) address to help MBR).
+
+---Provide us a boot selection menu to choose a particular system (OS) which we want to boot our machine.
+
+---Then it handovers the control to the boot loader.
+
+4. GRUB: Grand unified boot loader it used to load kernel image(VMlinuz is kernel image of redhat).
+
+---Location(/boot/grub/grub.conf), GRUB2 is latest version of bootloder.
+
+---It contains info about linux kernel & initial (basic) RAM Disk
+
+---It knows particular partition where the root file system is loaded.
+
+---It gives control to kernel.
+
+5. Kernel: it load OS utility.
+
+6. init(target): initialization 
+
+Init levels:
+
+0. Run level 0 = init 0 - shutdown.
+
+1. Run level 1 = init 1 - single user mode without GUI & NFS.
+
+2. Run level 2 = init 2 - multi user mode without network FS.
+
+3. Run level 3 = init 3 - multi user mode with NFS.
+
+4. Run level 4 = init 4 - Research purpose.
+
+5. Run level 5 = init 5 - X11 (Linux Graphics).
+
+6. Run level 6 = init 6 - reboot.
+
+
+
+

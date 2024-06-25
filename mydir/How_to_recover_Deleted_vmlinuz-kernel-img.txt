@@ -1,0 +1,61 @@
+Steps to recover deleted vmlinuz kernel img:
+
+
+1. go to the the /BaseOS.
+
+2. rpm -qa|grep kernel-core
+
+3. dnf reinstall kernel-core-4.18.0-147.el8.x86_64.
+
+now vmlinuz kernel image is regenerated.
+
+
+Steps to recover deleted both vmlinuz-kernel and rescue-vmlinuz-kernel img:
+
+For oracle virtual box:
+
+At booting press "f12".
+
+1. select "CD-ROM".
+
+2. select "Troubleshoting".
+
+3. select "rescue a your OS system".
+
+4. select option 1.
+
+5. press enter again to get shell.
+
+6. lsblk to check where is ur system is mounting.
+
+7. cd /run/install/repo/BaseOS/Packages/
+
+8. rpm -ivh --root=/mnt/sysimage/ --replacepkgs kernel-core-4.18.0-147.el8.x86_64 (installing vmlinuz kernel img).
+
+9. ls /mnt/sysimage/boot/ (to check whether vmlinuz img is available or not).
+
+10. touch /mnt/sysimage/.autorelabel
+
+11. exit
+
+done.
+
+
+Steps to set manual timeout in GRUB:
+
+
+1. cd /etc/default/
+
+2. vim grub
+
+GRUB_TIMEOUT=set the waiting time here
+
+save and quit!
+
+3. cd /boot/grub2/
+
+4. grub2-mkconfig -o grub.cfg
+
+Done:
+
+

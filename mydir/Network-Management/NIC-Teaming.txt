@@ -1,0 +1,31 @@
+
+1. yum install teamd* -y.
+
+2. add two network adapters.
+
+3. we have to create three connection here, one for team, and two for connecting team to nic).
+
+4. nmcli connection add type team con-name team0 ifname team0 config '{"runner":{"name":"activebackup"}}'. (creating a team connection)
+
+5. nmcli connection modify team0 ipv4.addresses 192.168.43.101 ipv4.gateway 192.168.43.3 ipv4.dns 192.168.43.3 connection.autoconnect yes ipv4.method manual
+
+6. nmcli connection add type team-slave con-name team0-slave1 ifname enp0s9 master team0  (connective slaves to team)
+
+7. nmcli connection add type team-slave con-name team0-slave2 ifname enp0s10 master team0 (connective slaves to team)
+
+8. nmcli dev status 
+
+9. nmcli connection reload 
+
+10. nmcli connection up team0
+
+11. nmcli connection up team0-slave1
+
+12, nmcli connection up team0-slave2
+
+13. nmcli connection show
+
+14. systemctl restart NetworkManager
+
+15. teamdctl team0 state
+

@@ -1,0 +1,74 @@
+Steps to set grub password:
+
+
+1. vim /etc/grub.d/10_linux 
+
+CLASS="--class gnu-linux --class gnu --class os --unrestricted" (remove --unrestricted).
+
+save and exit
+
+2. grub2-setpassword (for setting grub passwd, passwd will be stored in /boot/grub2/user.cfg file).
+
+3. grub2-mkconfig -o /boot/grub2/grub.cfg (regenerating grub.cfg file to change config settings).
+
+
+Steps to remove grub password:
+
+
+1. vim /etc/grub.d/10_linux
+
+CLASS="--class gnu-linux --class gnu --class os" (add --unrestricted).
+
+save and exit
+
+2. rm /boot/grub2/user.cfg (remove /boot/grub2/user.cfg file).
+
+3. grub2-mkconfig -o /boot/grub2/grub.cfg (regenerating grub.cfg file to change config settings).
+
+
+Steps to escape grub password:
+
+
+
+1. vim /etc/grub2.cfg (open file and comment all everything between line 78 to 87).
+
+
+save and exit
+
+
+
+
+Steps to escape grub password, if we don't have root password:
+
+
+For oracle virtual box:
+
+At booting press "f12".
+
+1. select "CD-ROM".
+
+2. select "Troubleshoting".
+
+3. select "rescue a your OS system".
+
+4. select option 1.
+
+5. press enter again to get shell.
+
+6. lsblk to check where is ur system is mounting.
+
+7. chroot /mnt/sysimage/  (switching to sysimage)
+
+
+8. vim /etc/grub2.cfg (open file and comment all everything between line 78 to 87).
+
+
+save and exit
+
+
+10. cd /
+
+11. touch /.autorelabel (relabeling selinux contexts).
+
+12. exit
+

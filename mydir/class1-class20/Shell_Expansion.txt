@@ -1,0 +1,194 @@
+Commands && Arguments:
+
+Shell - Shell works as interpreter between users command and kernel.
+
+Process of interpreting user's command to kernel is called Shell expansion.
+
+var1=100 setting value to var1 variable.
+
+echo $var1  printing var1 variables value
+
+echo -e 'hello \n newline' (to add new line after hello).
+
+echo -e 'hello \t newline' (to create space between words).
+
+type command-name to view whether command is externel or builtin of file.
+
+which command-name to view command full path.
+
+set -x to display shell expansion of command.
+
+set +x to remove shell expansion features of command.
+
+
+Control Operator:
+
+date;w;uptime  (we ; use between multiple commands to execute in fifo order).
+
+date & w ( we use & operator between commands to execute at once).
+
+echo $? to check whether previous command was successfully executed or not.
+
+date && w ( && operator will execute statements only if the we first condition will be true else it will give error).
+
+date || w ( || "OR" operator will excute the statements if either of the condition will be true).
+
+# sign we use to comment the line.
+
+echo "any control operator after \; doesn't work".
+
+echo hello \ newline.
+
+
+Shell Variables:
+
+
+There are two types of variable:
+
+1. system variable (HOSTNAME, PWD, SHELL, USER, PPID etc).
+
+2. user defined variable.
+
+
+variable can't start with number.
+
+echo $variable (to view the value of variable).
+
+variables are case sensitive in linux.
+
+
+a1=hello (setting value to variable a1).
+
+echo $a1 (printing value of variable)
+
+We have to define variable inside .bashrc file at the user's home directory to make it permanent.
+
+set command to display all set variables.
+
+unset variable-name (to unset the value of variable).
+
+PS1 variable contains setting of current shell environment.
+
+PATH variable contains the location about commands binary file.
+
+bash -c 'echo $SHELL $HOME'
+
+env -i bash -c 'echo $SHELL $HOME' (to ignore export variable).
+
+echo $SHLVL to (display current shell level).
+
+export variable-name (to export variable across all shell).
+
+echo ${var-name}man (to deliniate variable).
+
+set -u (to display error if varialbe unbound)
+
+set +u (to ignore error of unbound variable).
+
+
+Shell Embedding, Option & Shell History.
+
+echo $(var1=5; echo $var1) (embedding).
+
+echo $c1$b1$a1 $(b1=sub; echo $c1$b1$a1; echo $(c1=sub;echo $c1$b1$a1)) (nested embedding).
+
+echo `cd /etc; ls -d *| grep pass` (`` works as $() ).
+
+echo 'echo var1=5; echo $var1' ('' prints strings as it is)
+
+echo "echo var1=5; echo $var1" ("" prints value of variable if it's defined).
+
+echo $- (to display value of shell options).
+
+!! sign to execute previous command.
+
+history number (to view mentioned number of bottom history).
+
+!command-prefix to execute command of the history.
+
+ctrl + r to search command in history.
+
+
+echo $HISTSIZE to display how many number of commands will be saved in history.
+
+echo $HISTFILE to list where commands are kept.
+
+
+we can change value of HISTSIZE by setting its value in /etc/profile.
+
+echo $HISTFILESIZE  to view how much file HISTFILE can keep.
+
+
+Globbing in Linux:
+
+ls s* ( list all files starting with latter f).
+
+ls *s ( list all files ending with latter f).
+
+ls *s* ( list all files which have latter f).
+
+ls t*e  ( list all file starting with latter t and ending with latter e).
+
+ls File[5A] (files should ending with A or 5).
+
+ls File[5A] (files should ending with 5 or A).
+
+ls File[A5][5b] (file should have 2nd last latter A or 5 and last latter 5 or b).
+
+ls File[A5][!Z] (file should have 2nd last latter A or 5 and last latter should not be z).
+
+ls File[!5] (files should not ending with 5).
+
+ls File[!5]? (files should not have 2nd last latter 5 and ending with any latter).
+
+ls File[a-z] (files should ending between a-z).
+
+ls File[0-9] (files should ending between 0-9).
+
+ls File[a-z][a-z]* (files should not have 2nd and 3rd last latter a-z and ending with any latter).
+
+ls [A-Z]ile* (files should start with capital a-z and ending with any latter).
+
+echo "*" to prevent file globbing.
+
+HISTTIMEFORMAT="%d/%m/%y %T " to set date and time in history.
+
+vim /etc/bashrc   setting variable value permanently.
+
+HISTTIMEFORMAT="%d/%m/%y %T " 
+
+save and quit
+
+history -d number of history (to delete command from a particular number in history).
+
+  
+
+
+
+ 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,96 @@
+/etc/firewalld/firewalld.conf is the firewall global config file in rhel8.
+
+ll /usr/lib/firewalld/  (this dir has all script file of firewall).
+
+drwxr-xr-x. 2 root root  224 Apr  5 19:42 helpers
+drwxr-xr-x. 2 root root 4096 Apr  5 19:42 icmptypes
+drwxr-xr-x. 2 root root   20 Apr  5 19:42 ipsets
+drwxr-xr-x. 2 root root 8192 Apr  5 19:42 services
+drwxr-xr-x. 2 root root  203 Apr  5 19:42 zones
+
+
+ll /usr/lib/firewalld/zones/   (available zones in firewall).
+
+-rw-r--r--. 1 root root 299 Feb  4  2021 block.xml
+-rw-r--r--. 1 root root 293 Feb  4  2021 dmz.xml
+-rw-r--r--. 1 root root 291 Feb  4  2021 drop.xml
+-rw-r--r--. 1 root root 304 Feb  4  2021 external.xml
+-rw-r--r--. 1 root root 397 Feb  4  2021 home.xml
+-rw-r--r--. 1 root root 412 Feb  4  2021 internal.xml
+-rw-r--r--. 1 root root 809 Nov 27  2019 libvirt.xml
+-rw-r--r--. 1 root root 729 Aug 18  2021 nm-shared.xml
+-rw-r--r--. 1 root root 343 Feb  4  2021 public.xml
+-rw-r--r--. 1 root root 162 Feb  4  2021 trusted.xml
+-rw-r--r--. 1 root root 339 Feb  4  2021 work.xml
+
+
+firewall-cmd --get-zones (list available zones in firewall).
+
+firewall-cmd --list-all --zone=public (to list everything of public zone you can check any zone).
+
+firewall-cmd --get-default-zone (to get default zone of firewall).
+
+firewall-cmd --get-active-zones (list active zones of firewall).
+
+firewall-cmd --get-services (to list all available services in firewall).
+
+firewall-cmd --list-all (list everything about current zone).
+
+firewall-cmd --list-services (list active services).
+
+firewall-cmd --list-ports (list active ports).
+
+firewall-cmd --permanent --add-service=servivcename (to add services in current zone).
+
+firewall-cmd --permanent --add-port=portname (add port in current zone).
+
+systemctl stop firewalld.service ( to stop firewall).
+
+systemctl disable firewalld.service (to disable firewall).
+
+// systemctl start cockpit.service
+
+
+Port forwarding :
+
+firewall-cmd --zone=public --add-forward-port=port=22:proto=tcp:toport=5000 --permanent
+
+firewall-cmd --reload 
+
+firewall-cmd --zone=public --remove-forward-port=port=22:proto=tcp:toport=5000 --permanent
+
+firewall-cmd --reload 
+
+Masquerading:
+
+firewall-cmd --query-masquerade (to check whether masquerade is enable or not).
+
+firewall-cmd --add-masquerade --permanent
+
+firewall-cmd --zone=public --add-forward-port=port=9090:proto=tcp:toport=9090:toaddr=192.168.63.12 --permanent
+
+Rich Rules:
+
+firewall-cmd --permanent --zone=public --remove-rich-rule 'rule family="ipv4" source address="192.168.63.12" port port=22 protocol=tcp reject'
+
+firewall-cmd --permanent --zone=public --remove-rich-rule 'rule family="ipv4" source address="192.168.63.12" port port=22 protocol=tcp accept'
+
+
+firewall-cmd --get-icmptypes (to get predefined icmp rules).
+
+firewall-cmd --info-icmptype=echo-request (echo req for ipv4 and ipv6).
+
+firewall-cmd --query-icmp-block=echo-request (to check whether icmp req is blocked or not).
+
+firewall-cmd --add-icmp-block=echo-request --permanent (to stop ack req).
+
+firewall-cmd --remove-icmp-block=echo-request --permanent (to start ack req).
+
+firewall-cmd --add-icmp-block-inversion --permanent (to add icmp block inversions).
+
+firewall-cmd --remove-icmp-block-inversion --permanent (to remove icmp block inversions).
+
+
+
+
+

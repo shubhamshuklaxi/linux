@@ -1,0 +1,166 @@
+-----File Security in Linux-------:
+
+R(read)=4
+w(write)=2
+x(execute)=1
+
+permissions can be between 0 to 7 max.
+
+
+If u excute the ll -ah command in any directory u will get the file details in below format:
+
+1. inode-number. 
+
+2. filetype and permissions, special permissions. 
+
+filetype:ownerperm:groupperm:otheruserperm,specialperm.
+
+1 char  :3 char   :3 char   :3 char :char,"+","." 
+
+types of filetype.
+
+- normal file.
+
+d directory.
+
+l symbolic link.
+
+p named pipe.
+
+b block device.
+
+c character device.
+
+s socket. 
+
+3. link-number.
+
+4. owner. 
+
+5. group. 
+
+6. size. 
+
+7. month-date-time. 
+
+8. filename.
+
+chown username file or directory name (to change the owner of the file or dir).
+
+chgrp groupname file or directory name (to change the group of the file or dir).
+
+chown username:groupname file or directory (to change the owner and group simultaneously).
+
+always asign 7 and 5 perm to group and 7 perm to owner.
+
+chmod perm-in-octal-mode file or dir name (to asign perm using octal mode to perm).
+
+chmod perm-in-char file or dir name (to asign perm using char mode to perm).
+
+Ways to assign permission:
+
+g+perm to adding perm for group.
+u+perm to adding perm for user or owner.
+o+perm to adding perm for other users.
+
+
+g-perm to remove perm for group.
+u-perm to remove perm for user or owner.
+o-perm to remove perm for other users.
+
+u or g or o=rwx for full perm,
+
+u or g or o=rw  for read write only.
+
+u or g or o=r   for read only.
+
+u or g or o=    for no perm.
+
+
+We can give permissions to user(owner) group and other user at once by using "," between the the u,g,o.
+
+eg:
+
+chmod u+rwx, g+rx, o+r file or dir name.
+
+
+umask= 1st digit for special perm, last three digits to assign perm for u,g and o.
+
+
+666 - 022=644= effective perm for file by default in umask.
+
+777 - 022=755=effective perm for directory by default in umask.
+
+chmod 644 file (best perm for file)
+
+chmod u=xr,g=r,o=r file.
+
+chmod 755 dir (best perm for dir).
+
+
+cp -p to preserve timestamp for file or dir after copying.
+
+we can set the custm umask value .bashrc file.
+
+umask -S to see umask value in char.
+
+umask -S u=perm,g=perm,o=perm to set umask value using chars.
+
+
+
+Advance File permissions:
+
+A.stikybit:
+
+chmod +t file or dir. (if we apply stiky bit then it forces creater only access to the file).
+
+chmod 1755 file or dir. (enabling stiky bit using octal method).
+
+drwxrwxrwt. with execute permission.
+
+drwxrwx--T. without execute permission.
+
+chmod -t file or dir. (revoking stiky bit).
+
+chmod 0755 file or dir (revoking stiky bit using octal method).
+
+B. setgid (groupid bit):
+
+setgid bit enables group of the directory to the default group of all file inside the directory.
+
+chmod g+s Dir/ . (enabling setgid bit on directory using char method).
+
+chmod 2755 Dir/ . (enabling setgid bit on directory using octal method).
+
+chmod g-s Dir/ . (disabling setgid bit on directory using char method).
+
+chmod 0755 Dir/ . (disabling setgid bit on directory using octal method).
+
+drwxrws---. with exec option.
+
+drw-rwS---. without exec option.
+
+
+C. setuid (userid bit):
+
+
+setuid bit on file enables file to be executed as it's owner.
+
+
+chmod u+s Dir/ . (enabling setuid bit on directory using char method).
+
+chmod 4755 Dir/ . (enabling setuid bit on directory using octal method).
+
+chmod u-s Dir/ . (disabling setuid bit on directory using char method).
+
+chmod 0755 Dir/ . (disabling setuid bit on directory using octal method).
+
+-rwsr--r--. with exec option.
+
+-rwSr--r--. without exec option.
+
+
+
+
+
+  

@@ -1,0 +1,90 @@
+Steps to recover deleted or corrupted initramfs:
+
+at grub boot selection menu select rescue kernel image.
+
+then:
+
+1. cd /boot/
+
+2. uname -r to get the kernal version.
+
+3. dracut -v initramfs-kernel_version kernel_version --force (to generate initramfs img)
+
+---mkinitrd -v initramfs-kernel_version kernel_version --force (to generate initramfs img)
+
+at grub boot selection menu select normal kernel image.
+
+Steps to recover corrupted grub.cfg file:
+
+For oracle virtual box:
+
+At booting press "f12".
+
+1. select "CD-ROM".
+
+2. select "Troubleshoting".
+
+3. select "rescue a your OS system".
+
+4. select option 1.
+
+5. press enter again to get shell.
+
+6. lsblk to check where is ur system is mounting.
+
+7. chroot /mnt/sysimage/  (switching to sysimage)
+
+8. cd /boot/grub2/
+
+9. grub2-mkconfig -o grub.cfg (generating grub.cfg file inside /boot/grub2/).
+
+10. cd /
+
+11. touch /.autorelabel (relabeling selinux contexts).
+
+12. exit
+
+13. exit
+
+Steps to recover delted /boot/grub2/ dir:
+
+For oracle virtual box:
+
+At booting press "f12".
+
+1. select "CD-ROM".
+
+2. select "Troubleshoting".
+
+3. select "rescue a your OS system".
+
+4. select option 1.
+
+5. press enter again to get shell.
+
+6. lsblk to check where is ur system is mounting.
+
+7. chroot /mnt/sysimage/  (switching to sysimage).
+
+-- grub2-install /dev/your-default-disk   (installing grub2 directory).
+
+8. cd /boot/grub2/
+
+9. grub2-mkconfig -o grub.cfg (generating grub.cfg file inside /boot/grub2/).
+
+10. cd /
+
+11. touch /.autorelabel (relabeling selinux contexts).
+
+12. exit
+
+13. exit
+
+
+ 
+  
+
+
+
+
+

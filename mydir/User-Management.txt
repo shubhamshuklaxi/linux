@@ -1,0 +1,67 @@
+----------user_management--------
+
+. id username to check userid primary groupid secondary groupid
+
+. w and who command to see the all login users in the system.
+
+. users or whoami command to check the current login username.
+
+. lslogins to display the known users in the system.
+
+. su - username command to change user which its home directory.
+
+. vim /etc/sudoers file to give super user access to an users.
+
+## Allow root to run any commands anywhere 
+root    ALL=(ALL)       ALL
+u1    ALL=(ALL)       NOPASSWD:ALL (super user access to any users without passwd).
+u1    ALL=(ALL)       ALL (super user access to any users with passwd).
+
+## Allows people in group wheel to run all commands
+%wheel  ALL=(ALL)       ALL
+%groupname  ALL=(ALL)       ALL
+## Same thing without a password
+# %wheel        ALL=(ALL)       NOPASSWD: ALL
+  %groupname        ALL=(ALL)       NOPASSWD: ALL
+  
+
+. User's account details are stored in /etc/passwd file.
+
+. Detail of the user's account are stored in the below format.
+
+--username:passwd:userid:groupid:comments:user's home directory:user's default shell.
+
+. To add user in the /etc/passwd we use the below commands:
+
+--useradd username #this command is not the best way to add user.
+
+. Follow the below step to add user properly:
+
+--useradd -m -d /home/username -c "comments" -s /bin/bash username.
+
+(-m for modify, -d for home directory of user, -c for comments -s for user's default shell).
+
+. To delete user from /etc/passwd follow the bellow steps:
+
+--userdel -r username #this command will delete all user details including home directory of the user.
+
+. We can change the every details without even using all the above mentioned commands.
+. Use vim /etc/passwd command then we can edit every details of the user.
+
+. vim /etc/default/useradd (using this command we can check and edit default shell,usr-account-inactive-date,usr-account-expiry-date and /etc/skel file of all users). 
+
+. chown username directory/file (to change user of the file or directory).
+
+. usermod -aG groupname username (to add change group of the user).
+
+. usermod -g groupname username (to change primary group of the user)
+
+
+
+
+
+
+
+
+
+ 

@@ -1,0 +1,98 @@
+1. yum install bind* bind-utils* -y
+
+2. systemctl start named.service
+
+3. systemctl enable named.service
+
+4. systemctl status named.service
+
+5. firewall-cmd --permanent --add-service=dns --zone=public
+
+6. firewall-cmd --reload
+
+7. vim /etc/named.conf
+
+
+options {
+        listen-on port 53 { 127.0.0.1; dns-ip; };
+        listen-on-v6 port 53 { ::1; };
+        directory       "/var/named";
+        dump-file       "/var/named/data/cache_dump.db";
+        statistics-file "/var/named/data/named_stats.txt";
+        memstatistics-file "/var/named/data/named_mem_stats.txt";
+        secroots-file   "/var/named/data/named.secroots";
+        recursing-file  "/var/named/data/named.recursing";
+        allow-query     { any; };
+
+
+:wq!
+
+8. vim /etc/named.rfc1912.zones (mention domain name and file name at foreward zone reverse dns ip and filename at reverse zone ).
+
+
+// foreward zone
+
+zone "example.com" IN {
+        type master;
+        file "foreward.zone";
+        allow-update { none; };
+};
+
+// reverse zone
+
+zone "28.168.192.in-addr.arpa" IN {
+        type master;
+        file "reverse.zone";
+        allow-update { none; };
+};
+
+:wq!
+
+
+9.  cd /var/named/
+
+10. vim forward.zone 
+
+$TTL 1D
+@       IN SOA  example.com. root.example.com. (
+                                        0       ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+                NS      example.com.
+example.com.    A       192.168.28.12
+ansible         A       192.168.28.12
+server1         A       192.168.28.13
+server2         A       192.168.28.14
+server3         A       192.168.28.15
+
+
+11. vim reverse.zone 
+
+$TTL 1D
+@       IN SOA  example.com. root.example.com. (
+                                        0       ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+         NS      example.com.
+12       PTR     example.com.
+12       PTR     ansible.example.com.
+13       PTR     server1.example.com.
+14       PTR     server2.example.com.
+15 
+
+:wq!
+
+12. vim /etc/resolve.conf
+
+nameserver dns-ip
+
+:wq!
+
+13. systemctl status named.service
+
+
+done.

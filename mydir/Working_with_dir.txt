@@ -1,0 +1,54 @@
+
+[root@server ~]#  ~ sign represents home directory of user and # sign represent root user's shell.
+
+[root@server mydir]#  entry after the hostname is called present working directory.
+
+cd /dir-name (we use cd(change directory) command to change the directory).
+
+cd ~ or cd is a shortcut to current user's home directory.
+
+cd - is shortcut to previous working directory.
+
+cd . is for current directory.
+
+cd .. is shortcut to parent directory of child current directory.
+
+pwd (we use pwd  command to show present working directory).
+
+
+There are two path to navigate in between directory.
+
+cd /full-path absolute path.
+
+cd . or .. or ~ or - these are the relative path.
+
+Auto-Path-completion is feature of linux which we can use by simply pressing TAB twice.
+
+
+ls command is use to list file or direcory.
+
+ls /dir to list file inside the mention directory.
+
+ls -a command is use to list hidden files or direcory.
+
+ls -lh command is use to list files or direcory in human readable format.
+
+
+mkdir /dir-name command is use to create directory.
+
+mkdir -p /dir1/dir2 command is use to create directory in parent child format.
+
+rmdir /dir-name command is use to delete empty directory.
+
+rm -rf /dir-name command is use to delete directory with files.
+
+
+
+ 
+
+
+
+
+
+
+

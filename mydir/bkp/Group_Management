@@ -1,0 +1,39 @@
+---------Group-Management----------
+
+Group related details are stored in the /etc/group file in the below format:
+
+groupname:passwd:groupid:group members
+
+groupadd -r groupname command to create group in /etc/group file.
+
+Options:
+  -f, --force                   exit successfully if the group already exists,
+                                and cancel -g if the GID is already used
+  -g, --gid GID                 use GID for the new group
+  -h, --help                    display this help message and exit
+  -K, --key KEY=VALUE           override /etc/login.defs defaults
+  -o, --non-unique              allow to create groups with duplicate
+                                (non-unique) GID
+  -p, --password PASSWORD       use this encrypted password for the new group
+  -r, --system                  create a system account
+  -R, --root CHROOT_DIR         directory to chroot into
+  -P, --prefix PREFIX_DIR       directory prefix
+
+groupmod -n newgroupname oldgroupname. (to rename group).
+groupmod -g newgroupid groupname.(to change groupid).
+
+Options:
+  -h, --help                    display this help message and exit
+  -R, --root CHROOT_DIR         directory to chroot into
+  -P, --prefix PREFIX_DIR       prefix directory where are located the /etc/* files
+  -f, --force                   delete group even if it is the primary group of a user
+
+groupdel -R groupname to delete group forcefully
+
+
+gpasswd -A username groupname (to make a user admin of a group).
+gpasswd -a username groupname (to add user in a group).
+gpasswd -d username groupname (to remove user from a group).
+gpasswd -A "" groupname (to remove admin acces of group from all users).
+
+chgrp groupname directory (to change group of directory).

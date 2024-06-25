@@ -1,0 +1,1 @@
+@hourly date > /dev/pts/0

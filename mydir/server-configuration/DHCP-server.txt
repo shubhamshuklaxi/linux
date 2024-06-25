@@ -1,0 +1,25 @@
+1. yum install dhcp* -y
+
+2. firewall-cmd --permanent --add-service=dhcp
+
+3. firewall-cmd --reload
+
+4. cp -r /usr/share/doc/dhcp-server/dhcpd.conf.example /etc/dhcp/dhcpd.conf
+
+5. vim /etc/dhcp/dhcpd.conf
+
+# A slightly different configuration for an internal subnet.
+subnet 192.168.150.0 netmask 255.255.255.0 {
+  range 192.168.150.125 192.168.150.130;
+  #option domain-name-servers ns1.internal.example.org;
+  #option domain-name "internal.example.org";
+  #option routers 10.5.5.1;
+  #option broadcast-address 10.5.5.31;
+  default-lease-time 600;
+  max-lease-time 7200;
+}
+:wq!
+
+6. systemctl enable --now dhcpd.service
+
+7. systemctl status dhcpd.service

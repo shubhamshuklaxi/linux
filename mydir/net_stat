@@ -1,0 +1,13 @@
+-------netstat - Print network connections, routing tables, interface statistics, masquerade connections, and
+multicast memberships.
+
+netstat -ie to display all running network interfaces.
+netstat -r to display current routing table.
+netstat -c to display continue info.
+netstat -a to display all current conn.
+netstat -at to display all tcp conn.
+netstat -au to display all udp conn.
+netstat -ut to display all established tcp/udp conn.
+netstat -tulpn to display all listening tcp/udp conn.
+
+

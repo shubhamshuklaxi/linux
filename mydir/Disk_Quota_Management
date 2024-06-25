@@ -1,0 +1,96 @@
+***Disk Quota Management(DQM)**
+
+a. softlimit=warning
+
+b. hardlimit=restriction
+
+
+
+---quota username/groupnmame to display quota for usr/grp.
+
+1. rpm -qa quota or yum check quota.
+
+2. mkfs.ext4 /dev/block-device-name 
+
+3. mkdir /dir
+
+4. make entry in /etc/fstab
+
+what-to-mount mountpoint  type  defaults,usrquota,grpquota  0 0 
+
+save and quit
+
+7. mount -a
+
+8. mount -o remount /quotadir (to remount fs).
+
+8. mount | grep dirname (to check whether quota is enabled or not).
+
+10. quotacheck -vcug dir (to enable quota in dir).
+
+11. edquota -u username inside the dir (to set user block-limit and inode limit value).
+
+12. edquota -g groupname inside the dir (to set group block-limit and inode limit value).
+
+13. edquota -T -u/g username/groupname inside the dir (to set grace value of block and inode for user/group).
+
+14. quotaon on/off dir/ (to on/off quota in dir).
+
+15. quota -u username (to check user quota limit).
+
+16. quota -g groupname (to check group quota limit).
+
+17. repquota -a (to check all details of all quota using users and group).
+
+
+
+for xfs FS.
+
+1. xfs_quota -x -c "limit -u bsoft=size(K/M/B) bhard=size(K/M/B) username" /quota-dir/ (setting usr blocks soft&hard limit) 
+
+2. xfs_quota -x -c "limit -u isoft=number ihard=number username" /quota-dir/ (setting usr inodes soft&hard limit)
+
+3. xfs_quota -x -c "limit -g bsoft=size(K/M/B) bhard=size(K/M/B) groupname" /quota-dir/ (setting grp blocks soft&hard limit)
+
+4. xfs_quota -x -c "limit -u isoft=number ihard=number username" /quota-dir/ (setting grp inodes soft&hard limit)
+
+5. xfs_quota -x -c "report -hib" /quota-dir/  (to display usr grp project xfs_quota details)
+
+6. xfs_quota -x -c "print" /quota-dir/ (to display the xfs quota detail)
+
+7. xfs_quota -x -c "state -u" /quota-dir/ (to see the xfs quota state for user)
+
+8. xfs_quota -x -c "state -g" /quota-dir/ (to see the xfs quota state for group)
+
+10. xfs_quota -x -c "timer -u -b number(days/minutes/seconds/hours)" /quota-dir/ (to set blocks grace time xfs_quota for usr)
+
+11. xfs_quota -x -c "timer -g -b number(days/minutes/seconds/hours)" /quota-dir/ (to set blocks grace time xfs_quota for grp)
+
+12. xfs_quota -x -c "timer -u -i number(days/minutes/seconds/hours)" /quota-dir/ (to set inodes grace time xfs_quota for usr)
+
+13. xfs_quota -x -c "timer -g -i number(days/minutes/seconds/hours)" /quota-dir/ (to set inodes grace time xfs_quota  for group)
+
+
+14. xfs_quota -x -c "timer -u -r number(days/minutes/seconds/hours)" /quota-dir/ (to set realtime blocks grace time xfs_quota for usr)
+
+15. xfs_quota -x -c "timer -g -r number(days/minutes/seconds/hours)" /quota-dir/ (to set realtime blocks grace time xfs_quota for grp)
+
+
+
+16. xfs_quota -x -c "disable -u" /quota-dir/ (temporarily disabling xfs-quota for usr)
+
+17. xfs_quota -x -c "disable -g" /quota-dir/ (temporarily disabling xfs-quota for grp)
+
+18. xfs_quota -x -c "enable -u" /quota-dir/ (temporarily enabling xfs-quota for usr)
+
+19. xfs_quota -x -c "enable -g" /quota-dir/ (temporarily enabling xfs-quota for grp)
+
+20. xfs_quota -x -c "off -u" /quota-dir/ (permanently disabling xfs-quota for usr)
+
+21. xfs_quota -x -c "off -g" /quota-dir/ (permanently disabling xfs-quota for grp)
+
+
+
+
+
+

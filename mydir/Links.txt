@@ -1,0 +1,19 @@
+---How Set up Hard Link---:
+
+1. ln target-file-name linkname.
+
+2. Hard link creates copy of original file with same inode number.
+
+3. If we delete original file hard link still will be available.
+
+
+---How Set up softlink Link---:
+
+
+1. ln -s target-file-name linkname.
+
+2. Soft link creates a link of original file with diffrent inode number.
+
+3. If we delete original file soft link will not be available.
+
+  

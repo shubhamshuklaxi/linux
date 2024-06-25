@@ -1,0 +1,58 @@
+Steps to compress and decompress files:
+
+A. gzip and gunzip command:
+
+1. gzip file-name (to compress file with .gz extention).
+
+2. gzip *.extention-name (to compress all file with .extention-name to .gz extention).
+
+3. zcat filename.gz (to view contents of compressed file using gzip utility).
+
+4. zmore filename.gz (to view contents of compressed file using gzip utility).
+
+5. zless filename.gz (to view contents of compressed file using gzip utility).
+
+6. gunzip filename.gz (to decompress file with .gz extention)
+
+7. gunzip *.gz (to decompress all file with .gz extention).
+
+
+B. bzip2 and bunzip2 command: 
+
+
+1. bzip2 file-name (to compress file with .bz2 extention).
+
+2. bzip2 *.extention-name (to compress all file with .extention-name to .bz2 extention).
+
+3. bzcat filename.bz2 (to view contents of compressed file using bzip2 utility).
+
+4. bzmore filename.bz2 (to view contents of compressed file using bzip2 utility).
+ 
+5. bzless filename.bz2 (to view contents of compressed file using bzip2 utility).
+ 
+6. bunzip2 filename.bz2 (to decompress file with .bz2 extention)
+ 
+7. bunzip2 *.bz2 (to decompress all file with .bz2 extention).
+
+
+C. tar command:
+
+
+1. tar -cvf archive-name.tar filename (to create archive of a single file with .tar extention).
+
+2. tar -cvf archive-name.tar filename1 filename2 (to create archive of multiple files with .tar extention).
+
+3. tar -czf archive-name.tar.gz filename (to create archive of file with .tar extention as well compress archive with .gz extention).
+
+4. tar -czf archive-name.tar.gz filename1 filename2 (to create archive of multiple files .tar extention as well compress archive with .gz extention).
+
+5. tar -cjf archive-name.tar.bz2 filename (to create archive of file with .tar extention as well compress archive with .bz2 extention).
+
+6. tar -cjf archive-name.tar.bz2 filename1 filename2 (to create archive of multiple files .tar extention as well compress archive with .bz2 extention).
+
+7. tar -tvf archive-name.tar (to list the file in the archive).
+
+8. tar -xvf archive-name.tar (to unarchive the file).
+
+
+

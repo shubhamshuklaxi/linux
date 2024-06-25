@@ -1,0 +1,51 @@
+*****Runlevel (targets) in Linux*****
+
+We use runlevel command to display previous runlevel value.
+
+There are total 7 runlevel in linux.
+
+Mapping between runlevels and systemd targets
+
+
+       ┌─────────┬───────────────────┐
+       │Runlevel │ Target            │
+       ├─────────┼───────────────────┤
+       │0        │ poweroff.target   │
+       ├─────────┼───────────────────┤
+       │1        │ rescue.target     │
+       ├─────────┼───────────────────┤
+       │2, 3, 4  │ multi-user.target │
+       ├─────────┼───────────────────┤
+       │5        │ graphical.target  │
+       ├─────────┼───────────────────┤
+       │6        │ reboot.target     │
+       └─────────┴───────────────────┘
+
+
+systemctl list-units --type target command to display all target an it's sub category.
+
+who -r command to display current runlevel.
+
+systemctl show -p WantedBy sshd.service.
+
+systemctl get-default command to display set runlevel.
+
+
+
+ll -l /lib/systemd/system/runlevel*target to list all targets.
+
+lrwxrwxrwx. 1 root root 15 Dec 22 01:38 /lib/systemd/system/runlevel0.target -> poweroff.target
+lrwxrwxrwx. 1 root root 13 Dec 22 01:38 /lib/systemd/system/runlevel1.target -> rescue.target
+lrwxrwxrwx. 1 root root 17 Dec 22 01:38 /lib/systemd/system/runlevel2.target -> multi-user.target
+lrwxrwxrwx. 1 root root 17 Dec 22 01:38 /lib/systemd/system/runlevel3.target -> multi-user.target
+lrwxrwxrwx. 1 root root 17 Dec 22 01:38 /lib/systemd/system/runlevel4.target -> multi-user.target
+lrwxrwxrwx. 1 root root 16 Dec 22 01:38 /lib/systemd/system/runlevel5.target -> graphical.target
+lrwxrwxrwx. 1 root root 13 Dec 22 01:38 /lib/systemd/system/runlevel6.target -> reboot.target
+
+systemctl set-default target-name or runlevel to set runlevel(targets).
+
+
+init runlevel or telinit runlevel to change the current runlevel temporary.
+
+
+systemctl isolate target-name same as init telinit.

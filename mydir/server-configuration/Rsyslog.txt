@@ -1,0 +1,49 @@
+Steps to configure server-client rsyslog:
+
+1. yum install rsyslog (install rsyslog packages).
+
+2. systemctl start rsyslog.service (starting rsyslog service).
+
+3. systemctl enable rsyslog.service (enabling rsyslog service).
+
+4  systemctl status rsyslog.service (checking status of rsyslog service).
+
+5. vim /etc/rsyslog.conf (opening rsyslog config file).
+
+last two line will be commented just remove # from last two line at below:
+
+# Provides TCP syslog reception
+# for parameters see http://www.rsyslog.com/doc/imtcp.html
+module(load="imtcp") # needs to be done just once
+input(type="imtcp" port="514")
+
+6. systemctl restart rsyslog.service (restart rsyslog service).
+
+7. firewall-cmd --permanent --add-service=rsh (adding remote login service).
+
+8. firewall-cmd --reload
+
+
+Steps to follow at client machine:
+
+1. yum install rsyslog (install rsyslog packages).
+
+2. systemctl start rsyslog.service (starting rsyslog service).
+
+3. systemctl enable rsyslog.service (enabling rsyslog service).
+
+4  systemctl status rsyslog.service (checking status of rsyslog service).
+
+5. vim /etc/rsyslog.conf (opening rsyslog config file).
+
+# my rule
+
+*.* @@serverip/dns:port
+
+save and quit:
+
+6. systemctl restart rsyslog.service
+
+Done.
+
+

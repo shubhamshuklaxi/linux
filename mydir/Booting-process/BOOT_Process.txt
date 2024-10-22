@@ -108,3 +108,54 @@ Init levels:
 --- Systemd process starts other services & OS components.
 
 
+
+
+       +---------------------------------+
+       |          Power On               |
+       +---------------------------------+
+                     |
+                     v
+       +---------------------------------+
+       |    POST (Power On Self Test)    |
+       +---------------------------------+
+                     |
+                     v
+       +---------------------------------+
+       |         BIOS/UEFI               |
+       |   (Initial Hardware Setup)      |
+       +---------------------------------+
+                     |
+                     v
+       +---------------------------------+
+       |     Master Boot Record (MBR)    |
+       |  (Loads Boot Loader)            |
+       +---------------------------------+
+                     |
+                     v
+       +---------------------------------+
+       |        GRUB Boot Loader         |
+       | (Loads Kernel and Initramfs)    |
+       +---------------------------------+
+                     |
+                     v
+       +---------------------------------+
+       |            Kernel               |
+       | (Initializes Hardware and       |
+       |  Loads Initial Processes)       |
+       +---------------------------------+
+                     |
+                     v
+       +---------------------------------+
+       |            Init/Systemd         |
+       |  (Runs System Initialization    |
+       |   and Manages Targets)          |
+       +---------------------------------+
+                     |
+                     v
+       +---------------------------------+
+       |        Operating System         |
+       |     (User Space and Services)   |
+       +---------------------------------+
+
+
+

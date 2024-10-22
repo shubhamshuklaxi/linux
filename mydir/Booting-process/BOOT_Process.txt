@@ -18,15 +18,26 @@ Sequence of booting:
 1. POST - Power On self test: it tests itself, it checks whether all the attached components in our machine are in working condition and working order or not.
 
 
-2. BIOS - basic input output system:it's a chip in form of hardware it has inbuilt program it makes decision on what will be booting disk.
+Introduction to BIOS and UEFI
+        BIOS also called System Setup is an acronym for Basic Input or Output System. Modern Dell computers come with Unified Extensible Firmware Interface (UEFI). BIOS or UEFI is a firmware that is embedded on a small memory chip on the computer's system board or motherboard. It acts as an interface between the 
+        computer's hardware and the operating system.
 
----It resides inside CMOS chip in form of a battery.
+        The BIOS or UEFI activates all the basic hardware that is required to boot the operating system when the computer is turned on. This includes but is not limited to:
 
----BIOS is a combination of both hardware as well as software.
+        Chipset
+        Processor and cache
+        System memory or RAM
+        Video and audio controllers
+        Keyboard and mouse
+        Internal disk drives
+        Network controllers
+        Internal expansion cards
+        To access the BIOS or System Setup on Dell computers, follow these steps.
 
----BIOS provides us option to choose a boot device.
+        Press the F2 key several times at the Dell logo screen during startup.
+         Or
 
----Then it gives the control to MBR.
+        Press the F12 key several times at the Dell logo screen during startup and select BIOS Setup or System Setup from the menu.
 
 3. Master boot record - it's 512 bytes space inside memory which resides inside the first sector of primary Disk and it knows about partition location in Disk as well as it knows location of OS and how to use it.
 

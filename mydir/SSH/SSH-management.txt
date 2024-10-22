@@ -46,8 +46,13 @@ save and exit!
 
 
 1. vim /etc/motd (enter text).
+2  vim /etc/ssh/sshd_config.
 
-2. systemctl restart sshd.service
+PrintMotd yes
+
+save and exit!
+
+3 . systemctl restart sshd.service
 
 
 *How disable root login in SSH*

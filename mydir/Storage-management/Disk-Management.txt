@@ -38,7 +38,7 @@
 
 --mount /dev/block-device-name /dir to mount block device in the directory.
 
---mount /dev/block-device-name to unmount block device from directory. 
+--umount /dev/block-device-name to unmount block device from directory. 
 
 --dmidecode -t1 to display system information.
 

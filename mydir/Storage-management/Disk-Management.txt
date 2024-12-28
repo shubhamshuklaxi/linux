@@ -92,7 +92,7 @@ to display block count
 
 2. cat /proc/mounts to display mounted file system details.
 
-3 .cat /proc/mtab same as above but its not updated by kernel.
+3 .cat /etc/mtab same as above but its not updated by kernel.
 
 4. df -Th to display mounted filesystem with its type.
 

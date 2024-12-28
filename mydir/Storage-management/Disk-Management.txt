@@ -74,7 +74,7 @@
 
 --gfs use clustring
 
---blkid /dev/block-device-name to check uuid, size and type of filesystem.
+--blkid /dev/block-device-name to check uuid, block size and type of filesystem.
 
 --lsblk -f same as blkid 
 

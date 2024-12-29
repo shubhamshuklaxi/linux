@@ -30,6 +30,8 @@ C. create lv(logical volume) using the volume group available in system.
 
 2 .lvcreate -L +size(in MB or GB) -n logical-volume-name volume-group-name
 
+---lvcreate --size +size(in MB or GB) --name logical-volume-name volume-group-name
+
 ---lvcreate -L size(in MB or GB) -n logical-volume-name volume-group-name
 
 ---lvcreate -l number of extents(1 extents is = 4MB) -n logical-volume-name volume-group-name

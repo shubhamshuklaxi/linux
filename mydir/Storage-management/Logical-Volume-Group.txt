@@ -55,6 +55,7 @@ Below are the steps to extend lvm.
 ---lvextend -L total size(in mb or gb) /dev/vgname/lvname  (to extend lvm).
 
 ---lvextend -L +size or total-size /dev/vgname/lvname -r (extend without using resize2fs).
+---lvextend --extents +100%FREE /dev/vgname/lvname -r (extending with declaring vg% )
 
 2. resize2fs /dev/centosvg/centoslv (to resize lvm)
 

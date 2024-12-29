@@ -1,78 +1,129 @@
------------Stratis--------
+  -----------Stratis Overview-----------
+  
+  **Stratis** is a local storage management solution introduced in **RHEL 8**. It helps manage local disks or partitions and provides advanced storage features:
+  
+  1. **Thin Provisioning**: Allocate disk space dynamically.
+  2. **File System Snapshots**: Create point-in-time backups of your file system.
+  3. **Pool-based Management**: Group multiple storage devices into pools for better management.
+  4. **Monitoring**: Provides tools to monitor storage health and performance.
+  
+  Stratis integrates with **Stratis CLI** (command-line tool) and **Stratis Daemon** (service that manages disks, pools, and file systems).
+  
+  -----------Steps to Create and Manage Stratis-----------
+  
+  **1. Install Stratis Utilities:**
+  
+  Install the Stratis tools (`stratisd` and `stratis-cli`):
 
-Definition: stratis is one of the new features that ships with RHEL8 distribution,
-
-Stratis is a local storage management solution provide:
-
-1. Thin provisioning.
-
-2. File system snapshot.
-
-3. Pool-based management.
-
-4. Monitoring.
-
-Basically, Stratis is a storage pool that is created from one or more local disks or disk partitions.
-
-Stratis provides two software utilities:
-
-Stratis-cli: this is the command-line tool that ships with stratis.
-
-stratis deamon: this is a deamon that creates and manages disks and plays a role in providing a DBUS API.
-
-Steps to to create stratis:
-
-1. dnf install stratisd stratis-cli* (installinf startis-cli utility).
-
-2. rpm -qi stratisd stratis-cli (checking the installing stratis-cli utility).
-
-3. systemctl enable --now stratisd (enabling stratisd deamon).
-
-4. systemctl start stratisd ( starting stratisd deamon).
-
-5. systemctl status stratisd ( checking status whether startisd deamon service is running or not).
-
-6. blkid /dev/blockdevicename (to check whether Disk is cleaned or not).
-
-7. wipefs -a /dev/blockdevicename (to wipe out disk).
-
-8. stratis pool create pool-name /dev/block-device-name (creating stratis-pool using disk or disk partitions).
-
-9. stratis pool list (to display the stratis pool).
-
-10. stratis fs create poolname fsname ( to create FS using stratis pool).
-
-11. stratis fs list (to Display stratis FS).
-
-12. mount /dev/stratis/stratis-pool-name/stratis-fs-name dir/ (mounting stratis FS).
-
-
-Steps to extend pool:
-
-1. umount /dev/stratis/stratis-pool-name/stratis-fs-name (unmounting stratis FS).
-
-2. stratis pool add-data poolname /dev/disk-name (adding additional disk in stratis pool).
-
---- stratis fs destroy pool-name fs-name (to destroy fs from pool).
-
---- stratis pool destroy pool-name (to destroy stratis pool).
-
---- stratis fs rename pool-name oldfs-name newfs-name (to rename stratis fs)
-
---- stratis pool rename oldpool-name newpool-name (to rename pool
-
-Steps to take snapshot of startis FS:
-
-1. stratis fs snapshot pool-name fs-name snapname (taking snap of stratis FS).
-
-how to revert the corrupted FS with help of snap:
-
-1. umount /dev/stratis/stratis-pool-name/stratis-fs-name (unmounting stratis FS).
-
-2. stratis fs destroy pool-name fs-name (destroying stratis FS from stratis pool).
-
-3. stratis fs snapshot pool-name snapname destroyed-FS-name (reverting fs using snap).
-
-4. mount /dev/stratis/stratis-pool-name/stratis-fs-name (mounting stratis FS).
-
-Done.
+  dnf install stratisd stratis-cli
+  
+  Check if the tools are installed correctly:
+  
+  rpm -qi stratisd stratis-cli
+  
+  2. Enable and Start the Stratis Daemon:
+  
+  Enable and start the Stratis service (daemon):
+  
+  systemctl enable --now stratisd
+  
+  Check the status of the Stratis daemon to confirm it’s running:
+  
+  systemctl status stratisd
+  
+  3. Prepare the Disk:
+  
+  To use a disk with Stratis, first ensure it's clean. Check if the disk is clean:
+  
+  blkid /dev/<block-device-name>
+  
+  If the disk contains any data, wipe it:
+  
+  wipefs -a /dev/<block-device-name>
+  
+  4. Create a Stratis Storage Pool:
+  
+  Create a pool from one or more disks (e.g., /dev/sda):
+  
+  stratis pool create <pool-name> /dev/<block-device-name>
+  
+  Verify the creation of the pool:
+  
+  stratis pool list
+  
+  5. Create a File System (FS):
+  
+  After creating a pool, create a file system (FS) on it:
+  
+  stratis fs create <pool-name> <fs-name>
+  
+  List all Stratis file systems:
+  
+  stratis fs list
+  
+  6. Mount the Stratis File System:
+  
+  To use the file system, mount it like a regular file system:
+  
+  mount /dev/stratis/<pool-name>/<fs-name> <mount-point>
+  
+  -----------Steps to Extend a Pool-----------
+  
+  1. Unmount the File System:
+  
+  Before adding more disks to the pool, unmount the file system:
+  
+  umount /dev/stratis/<pool-name>/<fs-name>
+  
+  2. Add a New Disk to the Pool:
+  
+  To extend the pool, add another disk:
+  
+  stratis pool add-data <pool-name> /dev/<new-disk-name>
+  
+  -----------Other Stratis Management Commands-----------
+  
+      Destroy a File System:
+  
+  stratis fs destroy <pool-name> <fs-name>
+  
+  Destroy a Stratis Pool:
+  
+  stratis pool destroy <pool-name>
+  
+  Rename a File System:
+  
+  stratis fs rename <pool-name> <old-fs-name> <new-fs-name>
+  
+  Rename a Stratis Pool:
+  
+  stratis pool rename <old-pool-name> <new-pool-name>
+  
+  -----------Working with Snapshots in Stratis-----------
+  
+  1. Take a Snapshot of a Stratis File System:
+  
+  Create a snapshot of the file system for backup or testing:
+  
+  stratis fs snapshot <pool-name> <fs-name> <snap-name>
+  
+  2. Revert to a Snapshot if the File System is Corrupted:
+  
+  If your file system becomes corrupted, you can revert to a snapshot:
+  
+      Unmount the File System:
+  
+  umount /dev/stratis/<pool-name>/<fs-name>
+  
+  Destroy the Corrupted File System:
+  
+  stratis fs destroy <pool-name> <fs-name>
+  
+  Restore the File System from Snapshot:
+  
+  stratis fs snapshot <pool-name> <snap-name> <new-fs-name>
+  
+  Mount the Restored File System:
+  
+  mount /dev/stratis/<pool-name>/<new-fs-name> <mount-point>
+  

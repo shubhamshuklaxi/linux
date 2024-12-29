@@ -1,142 +1,191 @@
--------RAID (redundant array of independent drives or redundant array of inexpensive disks)-----:
-
-RAID O - Striping
-
-RAID 1 - Mirroring
-
-RAID 5 - Stripping with parity
-
-RAID 6 - Strinping with double parity
-
-Raid 10 - Combining mirroring and striping
-
-Steps to create RAID 0(striping of disks):
-
-requirements for RAID0:
-
-1. minimum 2 Disk.
-
-2. maximum 32 Disk.
-
-Steps:
-
-1. Create partition in n number of block devices as per requirement.
-
-2. Partition type should fd(which means raid.
-
-3. run cat /proc/mdstat command to check raid in system.
-
-4. mdadm -C(create raid) /dev/md0(md0-mdn)(raid name) -l(level between 0-10) -n number of disks /dev/block-device-name (creating raid).
-
-5. mdadm -D or --details /dev/raidname(md0-mdn) to dislpay raid details.
-
-6. mkfs.fstype /dev/raidname (formating raid into fs)
-
-7. mount /dev/raidname dir/ (mounting raid)
-
-8. umount /de/raidname (umounting raid).
-
-Steps to remove RAID0:
-
-1. mdadm -S or --stop /dev/raidname (stopping raid).
-
-2. mdadm --remove /dev/raidname (removing raid).
-
-3. mdadm --zero-superblock block-devices (removing block-devices from RAID).
-
-
-Steps to create RAID1(mirroring of disk):
-
-Requirement of RAID1:
-
-1. minimum 2 Disk.
-
-2. maximum 32 Disk.
-
-
-Steps:
-
-1. create atleast 2 raid block device of same size.
-
-2. mdadm -C /dev/raid-name(md0-mdn) -l 1 (raid level) -n 2 (number of block-device).
-
-4. mkfs.FStype /dev/raid-name (mounting raid).
-
-4. mount /dev/raid-name dir/ (mounting raid).
-
-How to test faulty in RAID.
-
-1. mdadm /dev/raid-name(md0-mdn) -f blockdevicename (making block device faulty)
-
-2. umount /dev/raid-name(md0-mdn)  (umounting raid).
-
-3. mdadm /dev/raid-name(md0-mdn) -r /dev/block-device-name (faulty block device name) removing faulty blockdevice.
-
-4. mdadm /dev/raid-name(md0-mdn) -a /dev/block-device-name (adding new block device).
-
-5. mount /dev/raid-name(md0-mdn) dir/ (mounting raid device).
-
-RAID5. 
-
-Steps to create RAID5(striping with parity):
-
-In RAID5 if two of three disk fails then all data will be lost:
-
-requirements for RAID5:
-
-1. Minimum 3 Disk.
-
-2. maximum 16 Disk.
-
-Steps:
-
-mdadm -create or -c /dev/raid-name(md0-mdn) -l 5(RAID-level) -c 3(count) block-device-name. 
-
-Except above everything is same as RAID1.
-
-
-RAID6.
-
-Steps to create RAID6(striping with dual parity):
-
-requirements for RAID6:
-
-1. minimum 4 Disk.
-
-2. maximum 32 Disk.
-
-Steps:
-
-mdadm -create or -c /dev/raid-name(md0-mdn) -l 6(RAID-level) -c 4 (min-count) block-device-name.
-
-Except above everything is same as RAID1.
-
-
-
-
-RAID10.
-
-Steps to create RAID10(striping with mirroring):
-
-RAID10 is made of two sets one set for striping and one for mirroring if more than two Disks from RAID10 fails then all data will be lost.
-
-
-In RAID10 if more than two of four disk fails then all data will be lost:
-
-requirements for RAID10:
-
-1. Minimum 4 Disk.
-
-2. maximum 72 Disk.
-
-Steps:
-
-mdadm -C or --create /dev/raidname(md0-mdn) -l 10(raid level 10) -n 4 (number of block device) block-device-name
-
-except everything is same as RAID1-RAID6.
-
-end.
-
-
-
-
+  RAID (Redundant Array of Independent Disks or Redundant Array of Inexpensive Disks):
+  
+  - RAID 0 - Striping  
+  - RAID 1 - Mirroring  
+  - RAID 5 - Striping with parity  
+  - RAID 6 - Striping with double parity  
+  - RAID 10 - Combining mirroring and striping
+  
+  ---
+  
+  Steps to Create RAID 0 (Striping of Disks)
+  
+  Requirements for RAID 0:
+  1. Minimum 2 disks.
+  2. Maximum 32 disks.
+  
+  Steps:
+  1. Create partitions on the required number of block devices.
+  2. Partition type should be "fd" (which means RAID).
+  3. Run `cat /proc/mdstat` to check the RAID status in the system.
+  4. Create the RAID array:
+  
+  mdadm -C /dev/md0 -l 0 -n <number-of-disks> /dev/<block-device1> /dev/<block-device2> ...
+  
+  - `-C` creates the RAID.
+  - `/dev/md0` is the RAID device name.
+  - `-l 0` specifies RAID 0.
+  - `-n <number-of-disks>` specifies how many disks to include in the RAID.
+  - `/dev/<block-device>` are the block devices to be included in the RAID.
+  5. Display RAID details:
+  
+  mdadm -D /dev/md0
+  
+  6. Format the RAID volume with the desired filesystem type:
+  
+  mkfs.<fstype> /dev/md0
+  
+  7. Mount the RAID volume to a directory:
+  
+  mount /dev/md0 /mnt/raid
+  
+  8. To unmount the RAID volume:
+  
+  umount /dev/md0
+  
+  
+  Steps to Remove RAID 0:
+  1. Stop the RAID array:
+  
+  mdadm -S /dev/md0
+  
+  2. Remove the RAID array:
+  
+  mdadm --remove /dev/md0
+  
+  3. Zero the superblock on the block devices:
+  
+  mdadm --zero-superblock /dev/sdX
+  
+  
+  ---
+  
+  Steps to Create RAID 1 (Mirroring of Disks)
+  
+  Requirements for RAID 1:
+  1. Minimum 2 disks.
+  2. Maximum 32 disks.
+  
+  Steps:
+  1. Create at least 2 block devices of the same size.
+  2. Create the RAID array:
+  
+  mdadm -C /dev/md0 -l 1 -n 2 /dev/sdX /dev/sdY
+  
+  3. Format the RAID volume with the desired filesystem:
+  
+  mkfs.<fstype> /dev/md0
+  
+  4. Mount the RAID volume:
+  
+  mount /dev/md0 /mnt/raid
+  
+  
+  ---
+  
+  How to Test for Faulty Disks in RAID
+  
+  1. Mark a disk as faulty:
+  
+  mdadm /dev/md0 -f /dev/sdX
+  
+  2. Unmount the RAID volume:
+  
+  umount /dev/md0
+  
+  3. Remove the faulty disk from the RAID array:
+  
+  mdadm /dev/md0 -r /dev/sdX
+  
+  4. Add a new disk to the RAID array:
+  
+  mdadm /dev/md0 -a /dev/sdZ
+  
+  5. Mount the RAID volume again:
+  
+  mount /dev/md0 /mnt/raid
+  
+  
+  ---
+  
+  RAID 5 (Striping with Parity)
+  
+  Requirements for RAID 5:
+  1. Minimum 3 disks.
+  2. Maximum 16 disks.
+  
+  Steps to Create RAID 5:
+  In RAID 5, if two out of three disks fail, data will be lost.
+  
+  1. Create the RAID array:
+  
+  mdadm --create /dev/md0 -l 5 -n 3 /dev/sdX /dev/sdY /dev/sdZ
+  
+  2. Format the RAID volume:
+  
+  mkfs.<fstype> /dev/md0
+  
+  
+  3. Mount the RAID volume:
+  
+  mount /dev/md0 /mnt/raid
+  
+  
+  Everything else is the same as for RAID 1.
+  
+  ---
+  
+  RAID 6 (Striping with Double Parity)
+  
+  Requirements for RAID 6:
+  1. Minimum 4 disks.
+  2. Maximum 32 disks.
+  
+  Steps to Create RAID 6:
+  In RAID 6, if two out of four disks fail, data can still be recovered.
+  
+  1. Create the RAID array:
+  
+  mdadm --create /dev/md0 -l 6 -n 4 /dev/sdX /dev/sdY /dev/sdZ /dev/sdW
+  
+  2. Format the RAID volume:
+  
+  mkfs.<fstype> /dev/md0
+  
+  
+  3. Mount the RAID volume:
+  
+  mount /dev/md0 /mnt/raid
+  
+  
+  Everything else is the same as for RAID 1.
+  
+  ---
+  
+  RAID 10 (Combining Mirroring and Striping)
+  
+  RAID 10 is made up of two sets: one set for striping (RAID 0) and one set for mirroring (RAID 1). If more than one disk in a mirror pair fails, data will be lost.
+  
+  Requirements for RAID 10:
+  1. Minimum 4 disks.
+  2. Maximum 72 disks.
+  
+  Steps to Create RAID 10:
+  RAID 10 combines RAID 1 (mirroring) and RAID 0 (striping). If more than two disks fail in the RAID 10 array, all data will be lost.
+  
+  1. Create the RAID 10 array:
+  
+  mdadm --create /dev/md0 -l 10 -n 4 /dev/sdX /dev/sdY /dev/sdZ /dev/sdW
+  
+  2. Format the RAID volume:
+  
+  mkfs.<fstype> /dev/md0
+  
+  
+  3. Mount the RAID volume:
+  
+  mount /dev/md0 /mnt/raid
+  
+  
+  Everything else is the same as RAID 1 through RAID 6.
+  

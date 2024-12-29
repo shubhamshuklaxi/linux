@@ -1,7 +1,7 @@
 --------Linux unified key setup(LUKS)--------:
 
 
-Usage: LUKS is used doe encrypting Disks and Disk's partitions.
+Usage: LUKS is used for encrypting Disks and Disk's partitions.
 
 Steps to enable LUKS in Disk or Disk partition:
 

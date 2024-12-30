@@ -6,6 +6,8 @@
 
 3. If we delete original file hard link still will be available.
 
+4  Hard links cannot be created across different filesystems or devices
+
 
 ---How Set up softlink Link---:
 

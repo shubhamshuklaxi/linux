@@ -163,4 +163,5 @@ killall psname1 psname2 (to kill multiple process using prefix).
 
 strace -p pid (to trace process using pid).
 
+strace is a diagnostic and debugging tool for the command line that can be used to trace system calls that are made and received by a running process. It records the name of each system call, its arguments, and its return value, as well as signals received by the process and other interactions with the kernel, and prints this record to standard error output or a selected file. 
 

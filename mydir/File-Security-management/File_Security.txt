@@ -7,7 +7,7 @@ x(execute)=1
 permissions can be between 0 to 7 max.
 
 
-If u excute the ll -ah command in any directory u will get the file details in below format:
+If u excute the ls -liah command in any directory u will get the file details in below format:
 
 1. inode-number. 
 

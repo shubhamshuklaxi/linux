@@ -21,7 +21,7 @@ Steps to enable LUKS in Disk or Disk partition:
 
 8. vim /etc/crypttab (opening file crypttab).
 
-filename (file in /dev/mapper) /dev/block-device-name cryptfile-path (where key is stored)
+filename (file in /dev/mapper) /dev/block-device-name cryptfile-path (where key is stored with execute perms)
 
 save and quit.
 

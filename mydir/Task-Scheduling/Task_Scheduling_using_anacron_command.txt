@@ -4,6 +4,8 @@ DESCRIPTION
        it does not assume that the machine is running continuously.  Hence, it can be used on  machines  that
        are not running 24 hours a day to control regular jobs as daily, weekly, and monthly jobs.
 
+Executes jobs based on frequency (daily, weekly, monthly), and if the system is off during the scheduled time, Anacron will run the missed job when the system is next up.
+
 Anacron  reads  a  list of jobs from the /etc/anacrontab configuration file.
 
 

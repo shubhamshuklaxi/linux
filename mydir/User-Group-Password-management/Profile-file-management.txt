@@ -1,30 +1,26 @@
-Profile Files:
+Profile Files Overview:
 
-There are two types of profile files:
+There are two main types of profile files:
 
-1. System profile files.
+    System Profile Files
+    User Profile Files
 
-2. User profile files.
+System Profile Files
 
-System profile files:
+    /etc/profile: This file is responsible for setting system-wide environment variables like PATH, PS1 (the command prompt appearance), and HOSTNAME. It also runs the /etc/inputrc and /etc/bashrc files.
 
-/etc/profile use to set path environment variable , PS1 variable and HOSTNAME variable and use to execute /etc/inpurc file and /etc/bashrc file.
+User Profile Files
 
-User profile files:
+User profile files are located in the home directory of each user.
 
-User profile files are located in home directory user.
+Here are the main user profile files:
 
-Below are user profile files:
+    .bash_history: This file saves the commands you run in the terminal. It is updated after you log out.
 
-.bash_history -: session commands are stored in this file after user logout.
+    .bash_logout: This file is executed when you log out. It lets the system know you've ended your session.
 
-.bash_logout -: this file is used to tell system that user has logged out.
+    .bash_profile: This file is executed when you log in. It typically sets the $HOME variable and sources (loads) the ./bashrc file to apply user-specific settings.
 
-.bash_profile -: it's use to add $ home and source ./bashrc file, this file only execute at user login.
+    .bashrc: This file is run every time you start a new terminal session. It sources the system-wide /etc/bashrc file and sets up the environment for each shell session.
 
-.bashrc -: it's use to source /etc/bashrc file, it executes each time when new shell started.
-
-All above files are sourced from /etc/skel directory.
-
-
-
+Note: All of these files are copied from the /etc/skel directory when a new user is created.

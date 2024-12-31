@@ -318,7 +318,7 @@ fuser -m -u /dir  to see the user of the FS
 
 fuser -kum /dir to kill all open file in FS
 
-fuser -V /dir to see the all processes related to FS.
+fuser -v /dir to see the all processes related to FS.
 
 if fuser -s /dev/ttyS1; then :; else something; fi
               invokes something if no other process is using /dev/ttyS1.

@@ -1,3 +1,6 @@
+Assumes the system is always running, and it executes jobs at the exact times specified.
+If the machine is off when a cron job is supposed to run, the job will be missed.
+
 To use cron utility we need to install crontabs packages:
 
 1. yum install crontabs -y (installing crontabs packages).

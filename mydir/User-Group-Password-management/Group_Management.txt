@@ -63,7 +63,7 @@ gpasswd -a username groupname (to add user in a group).
 
 gpasswd --add username groupname (to add user in a group).
 
-gpasswd --members username groupname (to add user in a group
+gpasswd --members username groupname (to add user in a group).
 
 gpasswd -d username groupname (to remove user from a group).
 

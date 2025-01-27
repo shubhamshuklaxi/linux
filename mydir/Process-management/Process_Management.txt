@@ -22,6 +22,8 @@ systemd is a parent process of all processes in the system.
 
 --- ps -C process-name or pidof process-name to show pid of any process.
 
+--- ps -u <username> to list processes run by a particular user
+
 
 Fork: when an original process split itself into another process is called forked.
 

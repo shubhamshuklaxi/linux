@@ -79,7 +79,7 @@ press "k" to move upword.
 
 press "j" to move downword
 
-press "l" t0 move right.
+press "l" to move right.
 
 press "h" to move left.
 

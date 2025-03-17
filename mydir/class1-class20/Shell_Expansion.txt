@@ -81,7 +81,7 @@ export variable-name (to export variable across all shell).
 
 echo ${var-name}man (to deliniate variable).
 
-set -u (to display error if varialbe unbound)
+set -u (to display error if variable unbound)
 
 set +u (to ignore error of unbound variable).
 
